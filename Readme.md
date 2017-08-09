@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Полина Рылова](https://up.htmlacademy.ru/javascript/10/user/33745).
-* Наставник: `Неизвестно`.
+* Наставник: [Николай Федосеев](https://up.htmlacademy.ru/javascript/10/user/104147).
 
 ---
 
