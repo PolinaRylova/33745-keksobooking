@@ -17,7 +17,7 @@ var MAX_LOC_X = 900;
 var MIN_LOC_Y = 100;
 var MAX_LOC_Y = 500;
 var getRandomNum = function (min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
+  return Math.floor(Math.random() * ((max + 1) - min)) + min; // +1 нужно для включения максимального числа
 };
 var getRandomArr = function (array) {
   var randomArr = [];
@@ -36,7 +36,7 @@ var createAdvObject = function (index) {
   var check = CHECK[getElementIndex(CHECK.length, index)];
   return {
     'author': {
-      'avatar': './img/avatars/user0' + (getElementIndex(IMG_COUNT, index) + 1) + '.png'
+      'avatar': './img/avatars/user0' + (getElementIndex(IMG_COUNT, index) + 1) + '.png' // +1 нужно, когда возврается 0, т.к имя картинки не может быть "00"
     },
     'offer': {
       'title': TITLES[getElementIndex(TITLES.length, index)],
@@ -59,7 +59,7 @@ var createAdvObject = function (index) {
 };
 var advertisments = [];
 var putObjectToArray = function () {
-  for (var j = 0; j < 8; j++) {
+  for (var j = 0; j < IMG_COUNT; j++) {
     advertisments.push(createAdvObject(j));
   }
 };
