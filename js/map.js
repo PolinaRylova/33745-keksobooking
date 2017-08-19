@@ -34,13 +34,10 @@ var createAdvObject = function (index) {
   var locationX = getRandomNum(MIN_LOC_X, MAX_LOC_X);
   var locationY = getRandomNum(MIN_LOC_Y, MAX_LOC_Y);
   var check = CHECK[getElementIndex(CHECK.length, index)];
-
-
   return {
     'author': {
       'avatar': './img/avatars/user0' + (getElementIndex(IMG_COUNT, index) + 1) + '.png'
     },
-
     'offer': {
       'title': TITLES[getElementIndex(TITLES.length, index)],
       'address': locationX + ', ' + locationY,
@@ -54,7 +51,6 @@ var createAdvObject = function (index) {
       'description': '',
       'photos': []
     },
-
     'location': {
       'x': locationX,
       'y': locationY
@@ -78,14 +74,11 @@ var createMapPin = function (index) {
   pin.classList.add('pin');
   pin.style.left = pinPositionX + 'px';
   pin.style.top = pinPositionY + 'px';
-
   image.src = data.author.avatar;
   image.classList.add('rounded');
   image.style.width = 40 + 'px';
   image.style.height = 40 + 'px';
-
   pin.appendChild(image);
-
   return pin;
 };
 var getRusLodgeType = function (type) {
@@ -94,15 +87,12 @@ var getRusLodgeType = function (type) {
     case 'flat':
       rusLodgeType = 'Квартира';
       break;
-
     case 'house':
       rusLodgeType = 'Дом';
       break;
-
     case 'bungalo':
       rusLodgeType = 'Бунгало';
       break;
-
     default:
       rusLodgeType = 'Тип не указан';
   }
