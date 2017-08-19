@@ -6,16 +6,16 @@ var APARTMENTS_TYPES = ['flat', 'house', 'bungalo'];
 var CHECK = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var IMG_COUNT = 8;
-var minRooms = 1;
-var maxRooms = 5;
-var minGuests = 1;
-var maxGuests = 10;
-var minPrice = 1000;
-var maxPrice = 1000000;
-var minLocX = 300;
-var maxLocX = 900;
-var minLocY = 100;
-var maxLocY = 500;
+var MIN_ROOMS = 1;
+var MAX_ROOMS = 5;
+var MIN_GUESTS = 1;
+var MAX_GUESTS = 10;
+var MIN_PRICE = 1000;
+var MAX_PRICE = 1000000;
+var MIN_LOC_X = 300;
+var MAX_LOC_X = 900;
+var MIN_LOC_Y = 100;
+var MAX_LOC_Y = 500;
 var getRandomNum = function (min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 };
@@ -31,8 +31,8 @@ var getElementIndex = function (length, ind) {
   return ind % length;
 };
 var createAdvObject = function (index) {
-  var locationX = getRandomNum(minLocX, maxLocX);
-  var locationY = getRandomNum(minLocY, maxLocY);
+  var locationX = getRandomNum(MIN_LOC_X, MAX_LOC_X);
+  var locationY = getRandomNum(MIN_LOC_Y, MAX_LOC_Y);
   var check = CHECK[getElementIndex(CHECK.length, index)];
 
 
@@ -44,10 +44,10 @@ var createAdvObject = function (index) {
     'offer': {
       'title': TITLES[getElementIndex(TITLES.length, index)],
       'address': locationX + ', ' + locationY,
-      'price': getRandomNum(minPrice, maxPrice),
+      'price': getRandomNum(MIN_PRICE, MAX_PRICE),
       'type': APARTMENTS_TYPES[getElementIndex(APARTMENTS_TYPES.length, index)],
-      'rooms': getRandomNum(minRooms, maxRooms),
-      'guests': getRandomNum(minGuests, maxGuests),
+      'rooms': getRandomNum(MIN_ROOMS, MAX_ROOMS),
+      'guests': getRandomNum(MIN_GUESTS, MAX_GUESTS),
       'checkin': check,
       'checkout': check,
       'features': getRandomArr(FEATURES),
