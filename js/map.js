@@ -1,11 +1,11 @@
 'use strict';
 
 // Создание массива объявлений
-var IMG_NUM = ['01', '02', '03', '04', '05', '06', '07', '08'];
 var TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
 var APARTMENTS_TYPES = ['flat', 'house', 'bungalo'];
 var CHECK = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+var IMG_COUNT = 8;
 var minRooms = 1;
 var maxRooms = 5;
 var minGuests = 1;
@@ -27,25 +27,25 @@ var getRandomArr = function (array) {
   }
   return randomArr;
 };
-var getArrElementByIndex = function (length, ind) {
+var getElementIndex = function (length, ind) {
   return ind % length;
 };
 var createAdvObject = function (index) {
   var locationX = getRandomNum(minLocX, maxLocX);
   var locationY = getRandomNum(minLocY, maxLocY);
-  var check = CHECK[getArrElementByIndex(CHECK.length, index)];
+  var check = CHECK[getElementIndex(CHECK.length, index)];
 
 
   return {
     'author': {
-      'avatar': './img/avatars/user0' + getArrElementByIndex(IMG_NUM.length, index + 1) + '.png'
+      'avatar': './img/avatars/user0' + (getElementIndex(IMG_COUNT, index) + 1) + '.png'
     },
 
     'offer': {
-      'title': TITLES[getArrElementByIndex(TITLES.length, index)],
+      'title': TITLES[getElementIndex(TITLES.length, index)],
       'address': locationX + ', ' + locationY,
       'price': getRandomNum(minPrice, maxPrice),
-      'type': APARTMENTS_TYPES[getArrElementByIndex(APARTMENTS_TYPES.length, index)],
+      'type': APARTMENTS_TYPES[getElementIndex(APARTMENTS_TYPES.length, index)],
       'rooms': getRandomNum(minRooms, maxRooms),
       'guests': getRandomNum(minGuests, maxGuests),
       'checkin': check,
@@ -63,11 +63,11 @@ var createAdvObject = function (index) {
 };
 var advertisments = [];
 var putObjectToArray = function () {
-  for (var j = 0; j < 9; j++) {
+  for (var j = 0; j < 8; j++) {
     advertisments.push(createAdvObject(j));
   }
 };
-putObjectToArray();// Сборка массива из 9 объектов
+putObjectToArray();// Сборка массива из 8 объектов
 // Создание метки
 var createMapPin = function (index) {
   var pin = document.createElement('div');
