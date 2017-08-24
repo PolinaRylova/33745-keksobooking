@@ -1,6 +1,8 @@
 'use strict';
 
 // Создание массива объявлений
+var ENTER_KEY = 13;
+var ESCAPE_KEY = 27;
 var TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
 var APARTMENTS_TYPES = ['flat', 'house', 'bungalo'];
 var CHECK = ['12:00', '13:00', '14:00'];
@@ -109,9 +111,9 @@ pinMap.appendChild(fragment);
 // Клонирование данных шаблона
 var lodgeTemplate = document.querySelector('#lodge-template');
 var lodgeTemplateContent = lodgeTemplate.content ? lodgeTemplate.content : lodgeTemplate;
-var lodgeElement = lodgeTemplateContent.cloneNode(true);
 // Создание и заполнение DOM-элемента
 var fillLodge = function (lodge) {
+  var lodgeElement = lodgeTemplateContent.cloneNode(true);
   lodgeElement.querySelector('.lodge__title').textContent = lodge.offer.title;
   lodgeElement.querySelector('.lodge__address').textContent = lodge.offer.address;
   lodgeElement.querySelector('.lodge__price').textContent = lodge.offer.price + ' ' + '\u20BD/ночь';
@@ -136,27 +138,98 @@ offerDialog.replaceChild(fillLodge(firstElement), dialogPanel);
 var dialogImg = offerDialog.querySelector('.dialog__title > img');
 dialogImg.setAttribute('src', firstElement.author.avatar);
 // Показ/скрытие карточки объявления
-var pinElements = document.querySelectorAll('.pin');
+var pins = document.querySelectorAll('.pin');
+var pinElements = [];
+for (var ind = 0; ind < pins.length; ind++) {
+  if (!pins[ind].classList.contains('pin__main')) {
+    pinElements.push(pins[ind]);
+  }
+}
 var dialogClose = offerDialog.querySelector('.dialog__close');
-var showDialog = function () {
-  offerDialog.classList.remove('hidden');
-};
-var hideDialog = function () {
-  offerDialog.classList.add('hidden');
-};
-var deactivatePinActive = function () {
+console.log('0');
+var deactivatePins = function () {
+  console.log('1');
   for (var i = 0; i < pinElements.length; i++) {
     pinElements[i].classList.remove('pin--active');
+    console.log('2');
   }
 };
-var checkPinActive = function (evt) {
-  deactivatePinActive();
-  var targetElement = evt.target;
-  targetElement.classList.add('pin--active');
+var checkPinActive = function (currentPin) {
+  console.log('3');
+  deactivatePins();
+  console.log('4');
+  currentPin.classList.add('pin--active');
+  console.log('5');
 };
-pinElements.forEach(function (item) {
-  item.addEventListener('click', checkPinActive);
-  item.addEventListener('click', showDialog);
+var addCurrentInfo = function (currentPin) {
+  console.log('6');
+  var currentPinIndex;
+  console.log('7');
+  for (var i = 0; i < pinElements.length; i++) {
+    console.log('8');
+    if (currentPin.baseURI === pinElements[i].baseURI) {
+      currentPinIndex = i;
+      console.log('9');
+    }
+  }
+  offerDialog.replaceChild(fillLodge(advertisments[currentPinIndex]), dialogPanel);
+
+  console.log('10');
+  console.log(advertisments);
+  console.log(currentPinIndex);
+};
+var showDialog = function () {
+  console.log('11');
+  offerDialog.classList.remove('hidden');
+  console.log('12');
+};
+var hideDialog = function () {
+  console.log('13');
+  offerDialog.classList.add('hidden');
+  console.log('14');
+};
+var pinEventHandler = function (event) {
+  console.log(event);
+  if (event.keyCode === ENTER_KEY || event.type === 'click') {
+    console.log('16');
+    deactivatePins();
+    console.log('17');
+    checkPinActive(event.target);
+    console.log('18');
+    addCurrentInfo(event.target);
+    console.log('19');
+    showDialog();
+    console.log('20');
+  }
+};
+var closeEventHandler = function (event) {
+  console.log('21');
+  if (event.keyCode === ENTER_KEY || event.type === 'click') {
+    console.log('22');
+    hideDialog();
+    console.log('23');
+    deactivatePins();
+    console.log('24');
+  }
+};
+for (var i = 0; i < pinElements.length; i++) {
+  console.log('25');
+  pinElements[i].addEventListener('click', pinEventHandler);
+  console.log('26');
+  pinElements[i].addEventListener('keydown', pinEventHandler);
+  console.log('27');
+}
+dialogClose.addEventListener('click', closeEventHandler);
+console.log('28');
+dialogClose.addEventListener('keydown', closeEventHandler);
+console.log('29');
+document.addEventListener('keydown', function (event) {
+  console.log('30');
+  if (event.keyCode === ESCAPE_KEY) {
+    console.log('31');
+    hideDialog();
+    console.log('32');
+    deactivatePins();
+    console.log('33');
+  }
 });
-dialogClose.addEventListener('click', hideDialog);
-dialogClose.addEventListener('click', deactivatePinActive);
