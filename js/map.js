@@ -135,3 +135,28 @@ offerDialog.replaceChild(fillLodge(firstElement), dialogPanel);
 // Замена адреса у аватарки пользователя
 var dialogImg = offerDialog.querySelector('.dialog__title > img');
 dialogImg.setAttribute('src', firstElement.author.avatar);
+// Показ/скрытие карточки объявления
+var pinElements = document.querySelectorAll('.pin');
+var dialogClose = offerDialog.querySelector('.dialog__close');
+var showDialog = function () {
+  offerDialog.classList.remove('hidden');
+};
+var hideDialog = function () {
+  offerDialog.classList.add('hidden');
+};
+var deactivatePinActive = function () {
+  for (var i = 0; i < pinElements.length; i++) {
+    pinElements[i].classList.remove('pin--active');
+  }
+};
+var checkPinActive = function (evt) {
+  deactivatePinActive();
+  var targetElement = evt.target;
+  targetElement.classList.add('pin--active');
+};
+pinElements.forEach(function (item) {
+  item.addEventListener('click', checkPinActive);
+  item.addEventListener('click', showDialog);
+});
+dialogClose.addEventListener('click', hideDialog);
+dialogClose.addEventListener('click', deactivatePinActive);
