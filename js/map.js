@@ -146,90 +146,53 @@ for (var ind = 0; ind < pins.length; ind++) {
   }
 }
 var dialogClose = offerDialog.querySelector('.dialog__close');
-console.log('0');
 var deactivatePins = function () {
-  console.log('1');
   for (var i = 0; i < pinElements.length; i++) {
     pinElements[i].classList.remove('pin--active');
-    console.log('2');
   }
 };
 var checkPinActive = function (currentPin) {
-  console.log('3');
   deactivatePins();
-  console.log('4');
   currentPin.classList.add('pin--active');
-  console.log('5');
 };
 var addCurrentInfo = function (currentPin) {
-  console.log('6');
   var currentPinIndex;
-  console.log('7');
   for (var i = 0; i < pinElements.length; i++) {
-    console.log('8');
     if (currentPin.baseURI === pinElements[i].baseURI) {
       currentPinIndex = i;
-      console.log('9');
     }
   }
   offerDialog.replaceChild(fillLodge(advertisments[currentPinIndex]), dialogPanel);
-
-  console.log('10');
-  console.log(advertisments);
-  console.log(currentPinIndex);
 };
 var showDialog = function () {
-  console.log('11');
   offerDialog.classList.remove('hidden');
-  console.log('12');
 };
 var hideDialog = function () {
-  console.log('13');
   offerDialog.classList.add('hidden');
-  console.log('14');
 };
 var pinEventHandler = function (event) {
-  console.log(event);
   if (event.keyCode === ENTER_KEY || event.type === 'click') {
-    console.log('16');
     deactivatePins();
-    console.log('17');
     checkPinActive(event.target);
-    console.log('18');
     addCurrentInfo(event.target);
-    console.log('19');
     showDialog();
-    console.log('20');
   }
 };
 var closeEventHandler = function (event) {
-  console.log('21');
   if (event.keyCode === ENTER_KEY || event.type === 'click') {
-    console.log('22');
     hideDialog();
-    console.log('23');
     deactivatePins();
-    console.log('24');
   }
 };
 for (var i = 0; i < pinElements.length; i++) {
-  console.log('25');
   pinElements[i].addEventListener('click', pinEventHandler);
-  console.log('26');
   pinElements[i].addEventListener('keydown', pinEventHandler);
-  console.log('27');
 }
 dialogClose.addEventListener('click', closeEventHandler);
-console.log('28');
 dialogClose.addEventListener('keydown', closeEventHandler);
-console.log('29');
 document.addEventListener('keydown', function (event) {
-  console.log('30');
   if (event.keyCode === ESCAPE_KEY) {
-    console.log('31');
     hideDialog();
-    console.log('32');
     deactivatePins();
-    console.log('33');
   }
 });
