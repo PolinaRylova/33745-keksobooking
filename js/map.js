@@ -98,11 +98,20 @@ var getRusLodgeType = function (type) {
   }
   return rusLodgeType;
 };
+// Создание фрагмента и запись массива меток в него
+var fragment = document.createDocumentFragment();
+for (var j = 0; j < advertisments.length; j++) {
+  fragment.appendChild(createMapPin(j));
+}
+// Отрисовка меток в блок
+var pinMap = document.querySelector('.tokyo__pin-map');
+pinMap.appendChild(fragment);
 // Клонирование данных шаблона
 var lodgeTemplate = document.querySelector('#lodge-template');
 var lodgeTemplateContent = lodgeTemplate.content ? lodgeTemplate.content : lodgeTemplate;
+var lodgeElement = lodgeTemplateContent.cloneNode(true);
+// Создание и заполнение DOM-элемента
 var fillLodge = function (lodge) {
-  var lodgeElement = lodgeTemplateContent.cloneNode(true);
   lodgeElement.querySelector('.lodge__title').textContent = lodge.offer.title;
   lodgeElement.querySelector('.lodge__address').textContent = lodge.offer.address;
   lodgeElement.querySelector('.lodge__price').textContent = lodge.offer.price + ' ' + '\u20BD/ночь';
@@ -117,16 +126,12 @@ var fillLodge = function (lodge) {
   lodgeElement.querySelector('.lodge__description').textContent = lodge.offer.description;
   return lodgeElement;
 };
-// Создание фрагмента и запись данных в него
-var fragment = document.createDocumentFragment();
-for (var j = 0; j < advertisments.length; j++) {
-  fragment.appendChild(createMapPin(j));
-  fragment.appendChild(fillLodge(advertisments[j]));
-}
-// Отрисовка метки
-var pinMap = document.querySelector('.tokyo__pin-map');
-pinMap.appendChild(fragment);
-// Отрисовка диалога
+// Вставка полученного DOM-элемента вместо блока dialog__panel
 var offerDialog = document.querySelector('#offer-dialog');
-var dialogPanel = document.querySelector('.dialog__panel');
-offerDialog.replaceChild(fragment, dialogPanel);
+var dialogPanel = offerDialog.querySelector('.dialog__panel');
+// Первый элемент из сгенерированного массива
+var firstElement = advertisments[0];
+offerDialog.replaceChild(fillLodge(firstElement), dialogPanel);
+// Замена адреса у аватарки пользователя
+var dialogImg = offerDialog.querySelector('.dialog__title > img');
+dialogImg.setAttribute('src', firstElement.author.avatar);
