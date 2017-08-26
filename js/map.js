@@ -76,6 +76,7 @@ var createMapPin = function (index) {
   pin.classList.add('pin');
   pin.style.left = pinPositionX + 'px';
   pin.style.top = pinPositionY + 'px';
+  pin.setAttribute('tabindex', 0);
   image.src = data.author.avatar;
   image.classList.add('rounded');
   image.style.width = 40 + 'px';
@@ -111,9 +112,11 @@ pinMap.appendChild(fragment);
 // Клонирование данных шаблона
 var lodgeTemplate = document.querySelector('#lodge-template');
 var lodgeTemplateContent = lodgeTemplate.content ? lodgeTemplate.content : lodgeTemplate;
+var offerDialog = document.querySelector('#offer-dialog');
 // Создание и заполнение DOM-элемента
 var fillLodge = function (lodge) {
   var lodgeElement = lodgeTemplateContent.cloneNode(true);
+  offerDialog.querySelector('.dialog__panel').remove();
   lodgeElement.querySelector('.lodge__title').textContent = lodge.offer.title;
   lodgeElement.querySelector('.lodge__address').textContent = lodge.offer.address;
   lodgeElement.querySelector('.lodge__price').textContent = lodge.offer.price + ' ' + '\u20BD/ночь';
@@ -126,25 +129,15 @@ var fillLodge = function (lodge) {
     lodgeElement.querySelector('.lodge__features').appendChild(span);
   });
   lodgeElement.querySelector('.lodge__description').textContent = lodge.offer.description;
+  // Замена адреса у аватарки пользователя
+  offerDialog.querySelector('.dialog__title > img').setAttribute('src', lodge.author.avatar);
+  offerDialog.querySelector('.dialog__close > img').setAttribute('tabindex', 0);
   return lodgeElement;
 };
-// Вставка полученного DOM-элемента вместо блока dialog__panel
-var offerDialog = document.querySelector('#offer-dialog');
-var dialogPanel = offerDialog.querySelector('.dialog__panel');
-// Первый элемент из сгенерированного массива
-var firstElement = advertisments[0];
-offerDialog.replaceChild(fillLodge(firstElement), dialogPanel);
-// Замена адреса у аватарки пользователя
-var dialogImg = offerDialog.querySelector('.dialog__title > img');
-dialogImg.setAttribute('src', firstElement.author.avatar);
+// Заполняем первым элементом из сгенерированного массива
+offerDialog.appendChild(fillLodge(advertisments[0]));gi
 // Показ/скрытие карточки объявления
-var pins = document.querySelectorAll('.pin');
-var pinElements = [];
-for (var ind = 0; ind < pins.length; ind++) {
-  if (!pins[ind].classList.contains('pin__main')) {
-    pinElements.push(pins[ind]);
-  }
-}
+var pinElements = document.querySelectorAll('.pin:not(.pin__main)');
 var dialogClose = offerDialog.querySelector('.dialog__close');
 var deactivatePins = function () {
   for (var i = 0; i < pinElements.length; i++) {
@@ -158,11 +151,11 @@ var checkPinActive = function (currentPin) {
 var addCurrentInfo = function (currentPin) {
   var currentPinIndex;
   for (var i = 0; i < pinElements.length; i++) {
-    if (currentPin.baseURI === pinElements[i].baseURI) {
+    if (currentPin === pinElements[i]) {
       currentPinIndex = i;
     }
   }
-  offerDialog.replaceChild(fillLodge(advertisments[currentPinIndex]), dialogPanel);
+  offerDialog.appendChild(fillLodge(advertisments[currentPinIndex]));
 };
 var showDialog = function () {
   offerDialog.classList.remove('hidden');
@@ -173,8 +166,8 @@ var hideDialog = function () {
 var pinEventHandler = function (event) {
   if (event.keyCode === ENTER_KEY || event.type === 'click') {
     deactivatePins();
-    checkPinActive(event.target);
-    addCurrentInfo(event.target);
+    checkPinActive(event.currentTarget);
+    addCurrentInfo(event.currentTarget);
     showDialog();
   }
 };
