@@ -135,7 +135,7 @@ var fillLodge = function (lodge) {
   return lodgeElement;
 };
 // Заполняем первым элементом из сгенерированного массива
-offerDialog.appendChild(fillLodge(advertisments[0]));gi
+offerDialog.appendChild(fillLodge(advertisments[0]));
 // Показ/скрытие карточки объявления
 var pinElements = document.querySelectorAll('.pin:not(.pin__main)');
 var dialogClose = offerDialog.querySelector('.dialog__close');
