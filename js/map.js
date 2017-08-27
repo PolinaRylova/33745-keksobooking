@@ -108,6 +108,7 @@ for (var j = 0; j < advertisments.length; j++) {
 }
 // Отрисовка меток в блок
 var pinMap = document.querySelector('.tokyo__pin-map');
+pinMap.querySelector('.pin__main').classList.add('hidden');
 pinMap.appendChild(fragment);
 // Клонирование данных шаблона
 var lodgeTemplate = document.querySelector('#lodge-template');
