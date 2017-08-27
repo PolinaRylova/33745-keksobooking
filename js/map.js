@@ -76,7 +76,7 @@ var createMapPin = function (index) {
   pin.classList.add('pin');
   pin.style.left = pinPositionX + 'px';
   pin.style.top = pinPositionY + 'px';
-  pin.setAttribute('tabindex', 1);
+  pin.setAttribute('tabindex', 0);
   image.src = data.author.avatar;
   image.classList.add('rounded');
   image.style.width = 40 + 'px';
@@ -132,7 +132,6 @@ var fillLodge = function (lodge) {
   lodgeElement.querySelector('.lodge__description').textContent = lodge.offer.description;
   // Замена адреса у аватарки пользователя
   offerDialog.querySelector('.dialog__title > img').setAttribute('src', lodge.author.avatar);
-  offerDialog.querySelector('.dialog__close > img').setAttribute('tabindex', 0);
   return lodgeElement;
 };
 // Заполняем первым элементом из сгенерированного массива
