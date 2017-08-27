@@ -76,7 +76,7 @@ var createMapPin = function (index) {
   pin.classList.add('pin');
   pin.style.left = pinPositionX + 'px';
   pin.style.top = pinPositionY + 'px';
-  pin.setAttribute('tabindex', 0);
+  pin.setAttribute('tabindex', 1);
   image.src = data.author.avatar;
   image.classList.add('rounded');
   image.style.width = 40 + 'px';
