@@ -18,6 +18,7 @@ var MIN_LOC_X = 300;
 var MAX_LOC_X = 900;
 var MIN_LOC_Y = 100;
 var MAX_LOC_Y = 500;
+var ERROR_RED_SHADOW = '0 0 5px 2px red';
 var getRandomNum = function (min, max) {
   return Math.floor(Math.random() * ((max + 1) - min)) + min; // +1 нужно для включения максимального числа
 };
@@ -189,3 +190,50 @@ document.addEventListener('keydown', function (event) {
     deactivatePins();
   }
 });
+// Fields dependencies
+// Form validation
+var addressField = document.querySelector('#address');
+var titleField = document.querySelector('#title');
+var priceField = document.querySelector('#price');
+var checkValidity = function (field) {
+  var currentField = field;
+  if (!currentField.validity.valid) {
+    currentField.style.boxShadow = ERROR_RED_SHADOW;
+
+    if (currentField.validity.valueMissing) {
+      currentField.setCustomValidity('Заполните поле, пожалуйста');
+    } else if (currentField.validity.tooShort || currentField.value.length < currentField.minLength) {
+      currentField.setCustomValidity('Название должно содержать не менее ' + currentField.minLength + ' символов');
+    } else if (currentField.validity.tooLong) {
+      currentField.setCustomValidity('Название должно содержать не более ' + currentField.maxLength + ' символов');
+    } else if (currentField.validity.rangeUnderflow) {
+      currentField.setCustomValidity('Число должно быть в диапазоне от ' + currentField.min + ' до ' + currentField.max);
+    } else {
+      currentField.setCustomValidity('');
+      currentField.style.boxShadow = '';
+    }
+  }
+};
+addressField.addEventListener('invalid', function () {
+  checkValidity(addressField);
+});
+addressField.addEventListener('change', function () {
+  checkValidity(addressField);
+});
+titleField.addEventListener('invalid', function () {
+  checkValidity(titleField);
+});
+// Проверка поля на минимум символов для Edge
+titleField.addEventListener('input', function () {
+  checkValidity(titleField);
+});
+titleField.addEventListener('change', function () {
+  checkValidity(titleField);
+});
+priceField.addEventListener('invalid', function () {
+  checkValidity(priceField);
+});
+priceField.addEventListener('change', function () {
+  checkValidity(priceField);
+});
+
