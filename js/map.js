@@ -236,13 +236,11 @@ priceField.addEventListener('change', function () {
   checkValidity(priceField);
 });
 // Fields dependencies
-var noticeForm = document.querySelector('.notice__form');
 var timeinSelect = document.querySelector('#timein');
 var timeoutSelect = document.querySelector('#timeout');
 var typeSelect = document.querySelector('#type');
 var roomNumSelect = document.querySelector('#room_number');
 var capacitySelect = document.querySelector('#capacity');
-var submitButton = document.querySelector('.form__submit');
 
 var synchronizeTimeinAndTimeout = function (masterSelect, dependentSelect) {
   dependentSelect[masterSelect.selectedIndex].selected = true;
@@ -330,4 +328,23 @@ roomNumSelect.addEventListener('change', function (e) {
 
 capacitySelect.addEventListener('change', function (e) {
   synchronizeRoomNumAndCapacity(e.target, roomNumSelect);
+});
+// Обработка события клика по submit и сброс
+var noticeForm = document.querySelector('.notice__form');
+var formSubmit = document.querySelector('.form__submit');
+formSubmit.addEventListener('click', function () {
+  var formFields = noticeForm.elements;
+  var allValid = true;
+  for (i = 0; i < formFields.length; i++) {
+    if (!formFields[i].validity.valid) {
+      formFields[i].style.boxShadow = ERROR_RED_SHADOW;
+      allValid = false;
+    } else {
+      formFields[i].style.boxShadow = '';
+    }
+  }
+  if (allValid) {
+    noticeForm.submit();
+    noticeForm.reset();
+  }
 });
