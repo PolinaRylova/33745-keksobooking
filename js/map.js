@@ -253,10 +253,9 @@ timeinSelect.addEventListener('change', function (e) {
 timeoutSelect.addEventListener('change', function (e) {
   synchronizeTimeinAndTimeout(e.target, timeinSelect);
 });
-var synchronizeTypeAndMinPrice = function (e) {
-  var selectedPriceIndex = e.target.selectedIndex;
+var synchronizeTypeAndMinPrice = function (targetSelectedIndex) {
+  var selectedPriceIndex = targetSelectedIndex;
   var minPrice;
-
   switch (selectedPriceIndex) {
     case 0:
       minPrice = 1000;
@@ -271,10 +270,64 @@ var synchronizeTypeAndMinPrice = function (e) {
       minPrice = 10000;
       break;
   }
-
   priceField.setAttribute('min', minPrice);
 };
 typeSelect.addEventListener('change', function (e) {
-  synchronizeTypeAndMinPrice(e);
+  synchronizeTypeAndMinPrice(e.target.selectedIndex);
 });
-var synchronizeRoomNumAndCapacity = function () {};
+var synchronizeRoomNumAndCapacity = function (masterSelect, dependentSelect) {
+  var selectedMasterIndex = masterSelect.selectedIndex;
+  var dependentIndex;
+  var needToChange = true;
+  if (masterSelect === roomNumSelect) {
+    switch (selectedMasterIndex) {
+      case 0:
+        dependentIndex = 2;
+        break;
+      case 1:
+        dependentIndex = 1;
+        break;
+      case 2:
+        dependentIndex = 0;
+        break;
+      case 3:
+        dependentIndex = 3;
+        break;
+    }
+  } else if (masterSelect === capacitySelect) {
+    switch (selectedMasterIndex) {
+      case 0:
+        dependentIndex = 2;
+        break;
+      case 1:
+        if (dependentSelect[1].selected || dependentSelect[2].selected) {
+          needToChange = false;
+        } else {
+          dependentIndex = 1;
+        }
+        break;
+      case 2:
+        if (dependentSelect[0].selected || dependentSelect[1].selected || dependentSelect[2].selected) {
+          needToChange = false;
+        } else {
+          dependentIndex = 0;
+        }
+        break;
+      case 3:
+        dependentIndex = 3;
+        break;
+    }
+  }
+
+  if (needToChange) {
+    dependentSelect[dependentIndex].selected = true;
+  }
+};
+
+roomNumSelect.addEventListener('change', function (e) {
+  synchronizeRoomNumAndCapacity(e.target, capacitySelect);
+});
+
+capacitySelect.addEventListener('change', function (e) {
+  synchronizeRoomNumAndCapacity(e.target, roomNumSelect);
+});
