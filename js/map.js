@@ -190,7 +190,6 @@ document.addEventListener('keydown', function (event) {
     deactivatePins();
   }
 });
-// Fields dependencies
 // Form validation
 var addressField = document.querySelector('#address');
 var titleField = document.querySelector('#title');
@@ -236,4 +235,46 @@ priceField.addEventListener('invalid', function () {
 priceField.addEventListener('change', function () {
   checkValidity(priceField);
 });
+// Fields dependencies
+var noticeForm = document.querySelector('.notice__form');
+var timeinSelect = document.querySelector('#timein');
+var timeoutSelect = document.querySelector('#timeout');
+var typeSelect = document.querySelector('#type');
+var roomNumSelect = document.querySelector('#room_number');
+var capacitySelect = document.querySelector('#capacity');
+var submitButton = document.querySelector('.form__submit');
 
+var synchronizeTimeinAndTimeout = function (masterSelect, dependentSelect) {
+  dependentSelect[masterSelect.selectedIndex].selected = true;
+};
+timeinSelect.addEventListener('change', function (e) {
+  synchronizeTimeinAndTimeout(e.target, timeoutSelect);
+});
+timeoutSelect.addEventListener('change', function (e) {
+  synchronizeTimeinAndTimeout(e.target, timeinSelect);
+});
+var synchronizeTypeAndMinPrice = function (e) {
+  var selectedPriceIndex = e.target.selectedIndex;
+  var minPrice;
+
+  switch (selectedPriceIndex) {
+    case 0:
+      minPrice = 1000;
+      break;
+    case 1:
+      minPrice = 0;
+      break;
+    case 2:
+      minPrice = 5000;
+      break;
+    case 3:
+      minPrice = 10000;
+      break;
+  }
+
+  priceField.setAttribute('min', minPrice);
+};
+typeSelect.addEventListener('change', function (e) {
+  synchronizeTypeAndMinPrice(e);
+});
+var synchronizeRoomNumAndCapacity = function () {};
