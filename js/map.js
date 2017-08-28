@@ -316,16 +316,13 @@ var synchronizeRoomNumAndCapacity = function (masterSelect, dependentSelect) {
         break;
     }
   }
-
   if (needToChange) {
     dependentSelect[dependentIndex].selected = true;
   }
 };
-
 roomNumSelect.addEventListener('change', function (e) {
   synchronizeRoomNumAndCapacity(e.target, capacitySelect);
 });
-
 capacitySelect.addEventListener('change', function (e) {
   synchronizeRoomNumAndCapacity(e.target, roomNumSelect);
 });
@@ -336,11 +333,10 @@ formSubmit.addEventListener('click', function () {
   var formFields = noticeForm.elements;
   var allValid = true;
   for (i = 0; i < formFields.length; i++) {
+    formFields[i].style.boxShadow = '';
     if (!formFields[i].validity.valid) {
       formFields[i].style.boxShadow = ERROR_RED_SHADOW;
       allValid = false;
-    } else {
-      formFields[i].style.boxShadow = '';
     }
   }
   if (allValid) {
