@@ -331,16 +331,13 @@ var noticeForm = document.querySelector('.notice__form');
 var formSubmit = document.querySelector('.form__submit');
 formSubmit.addEventListener('click', function () {
   var formFields = noticeForm.elements;
-  var allValid = true;
-  for (i = 0; i < formFields.length; i++) {
-    formFields[i].style.boxShadow = '';
-    if (!formFields[i].validity.valid) {
-      formFields[i].style.boxShadow = ERROR_RED_SHADOW;
-      allValid = false;
+  for (var j = 0; j < formFields.length; j++) {
+    formFields[j].style.boxShadow = '';
+    if (!formFields[j].validity.valid) {
+      formFields[j].style.boxShadow = ERROR_RED_SHADOW;
+      return;
     }
   }
-  if (allValid) {
-    noticeForm.submit();
-    noticeForm.reset();
-  }
+  noticeForm.submit();
+  noticeForm.reset();
 });
