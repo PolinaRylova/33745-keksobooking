@@ -339,5 +339,8 @@ formSubmit.addEventListener('click', function () {
     }
   }
   noticeForm.submit();
+});
+noticeForm.addEventListener('submit', function (e) {
+  e.preventDefault();
   noticeForm.reset();
 });
