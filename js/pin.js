@@ -4,7 +4,7 @@
   var createMapPin = function (index) {
     var pin = document.createElement('div');
     var image = document.createElement('img');
-    var data = advertisments[index];
+    var data = window.data.advertismentsArr[index];
     var pinPositionX = data.location.x + (image.offsetWidth / 2);
     var pinPositionY = data.location.y + image.offsetHeight;
     pin.classList.add('pin');
@@ -37,7 +37,7 @@
   };
   // Создание фрагмента и запись массива меток в него
   var fragment = document.createDocumentFragment();
-  for (var j = 0; j < advertisments.length; j++) {
+  for (var j = 0; j < window.data.advertismentsArr.length; j++) {
     fragment.appendChild(createMapPin(j));
   }
   // Активность меток
@@ -47,23 +47,35 @@
       pinElements[i].classList.remove('pin--active');
     }
   };
-  var pinEventHandler = function (event) {
-    if (event.keyCode === ENTER_KEY || event.type === 'click') {
-      deactivatePins();
-      checkPinActive(event.currentTarget);
-      addCurrentInfo(event.currentTarget);
-      showDialog();
-    }
-  };
   var checkPinActive = function (currentPin) {
     deactivatePins();
     currentPin.classList.add('pin--active');
+  };
+  var pinEventHandler = function (event) {
+    if (event.keyCode === window.constants.ENTER_KEY || event.type === 'click') {
+      deactivatePins();
+      checkPinActive(event.currentTarget);
+    }
+  };
+  var closeEventHandler = function (event) {
+    if (event.keyCode === window.constants.ENTER_KEY || event.type === 'click') {
+      deactivatePins();
+    }
   };
   for (var i = 0; i < pinElements.length; i++) {
     pinElements[i].addEventListener('click', pinEventHandler);
     pinElements[i].addEventListener('keydown', pinEventHandler);
   }
+  var dialogCloseBtn = window.card.dialogCloseBtn;
+  dialogCloseBtn.addEventListener('click', closeEventHandler);
+  dialogCloseBtn.addEventListener('keydown', closeEventHandler);
+  // Событие ESCAPE
+  document.addEventListener('keydown', function (event) {
+    if (event.keyCode === window.constants.ESCAPE_KEY) {
+      deactivatePins();
+    }
+  });
   window.pin = {
     fragment: fragment
-  }
+  };
 })();

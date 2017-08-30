@@ -1,7 +1,5 @@
 'use strict';
 // Form validation
-var ENTER_KEY = 13;
-var ESCAPE_KEY = 27;
 var ERROR_RED_SHADOW = '0 0 5px 2px red';
 var addressField = document.querySelector('#address');
 var titleField = document.querySelector('#title');
@@ -10,7 +8,6 @@ var checkValidity = function (field) {
   var currentField = field;
   if (!currentField.validity.valid) {
     currentField.style.boxShadow = ERROR_RED_SHADOW;
-
     if (currentField.validity.valueMissing) {
       currentField.setCustomValidity('Заполните поле, пожалуйста');
     } else if (currentField.validity.tooShort || currentField.value.length < currentField.minLength) {
