@@ -36,22 +36,14 @@
     offerDialog.appendChild(fillLodge(window.data.advertismentsArr[currentPinIndex]));
     showDialog();
   };
-  var closeEventHandler = function (event) {
-    if (event.keyCode === window.constants.ENTER_KEY || event.type === 'click') {
-      hideDialog();
-      window.pin.deactivatePins();
-    }
+  var addEvtListenersToCard = function (callback) {
+    dialogClose.addEventListener('click', callback);
+    dialogClose.addEventListener('keydown', callback);
   };
-  dialogClose.addEventListener('click', closeEventHandler);
-  dialogClose.addEventListener('keydown', closeEventHandler);
-  // Событие ESCAPE
-  document.addEventListener('keydown', function (event) {
-    if (event.keyCode === window.constants.ESCAPE_KEY) {
-      hideDialog();
-    }
-  });
   window.card = {
     addCurrentInfo: addCurrentInfo,
-    lodgeEl: fillLodge
+    lodgeEl: fillLodge,
+    hideDialog: hideDialog,
+    addEvtListenersToCard: addEvtListenersToCard
   };
 })();

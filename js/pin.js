@@ -18,58 +18,23 @@
     pin.appendChild(image);
     return pin;
   };
-  // Создание фрагмента и запись массива меток в него
-  var fillFragment = function () {
-    var fragment = document.createDocumentFragment();
-    for (var j = 0; j < window.data.advertismentsArr.length; j++) {
-      fragment.appendChild(createMapPin(j));
-    }
-    return fragment;
-  };
-  // Активность меток
-  var pinElements = [];
-  var findRenderedPins = function () {
-    pinElements = document.querySelectorAll('.pin:not(.pin__main)');
-    pinElements.forEach(addEvtListenerToPins);
-  };
-  var findCurrentPinIndex = function (currentPin) {
-    var currentPinIndex;
-    for (var i = 0; i < pinElements.length; i++) {
-      if (currentPin === pinElements[i]) {
-        currentPinIndex = i;
-      }
-    }
-    return currentPinIndex;
-  };
-  var deactivatePins = function () {
-    for (var i = 0; i < pinElements.length; i++) {
-      pinElements[i].classList.remove('pin--active');
+  // Работа с активностью метки
+  var deactivatePin = function (activePin) {
+    if (activePin !== null) {
+      activePin.classList.remove('pin--active');
     }
   };
-  var checkPinActive = function (currentPin) {
-    deactivatePins();
+  var activatePin = function (currentPin) {
     currentPin.classList.add('pin--active');
   };
-  var pinEventHandler = function (e) {
-    if (e.keyCode === window.constants.ENTER_KEY || e.type === 'click') {
-      deactivatePins();
-      checkPinActive(e.currentTarget);
-      window.card.addCurrentInfo(findCurrentPinIndex(e.currentTarget));
-    }
+  var addEvtListenersToPin = function (pinEl, callback) {
+    pinEl.addEventListener('click', callback);
+    pinEl.addEventListener('keydown', callback);
   };
-  var addEvtListenerToPins = function (pinEl) {
-    pinEl.addEventListener('click', pinEventHandler);
-    pinEl.addEventListener('keydown', pinEventHandler);
-  };
-  // Событие ESCAPE
-  document.addEventListener('keydown', function (event) {
-    if (event.keyCode === window.constants.ESCAPE_KEY) {
-      deactivatePins();
-    }
-  });
   window.pin = {
-    fillFragment: fillFragment,
-    findRenderedPins: findRenderedPins,
-    deactivatePins: deactivatePins
+    createMapPin: createMapPin,
+    addEvtListenersToPin: addEvtListenersToPin,
+    deactivatePin: deactivatePin,
+    activatePin: activatePin
   };
 })();
