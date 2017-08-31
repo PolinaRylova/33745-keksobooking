@@ -57,6 +57,24 @@
       }
     };
   };
+  // Получить русский эквивалент данных о типе жилья
+  var getRusLodgeType = function (type) {
+    var rusLodgeType = '';
+    switch (type) {
+      case 'flat':
+        rusLodgeType = 'Квартира';
+        break;
+      case 'house':
+        rusLodgeType = 'Дом';
+        break;
+      case 'bungalo':
+        rusLodgeType = 'Бунгало';
+        break;
+      default:
+        rusLodgeType = 'Тип не указан';
+    }
+    return rusLodgeType;
+  };
   var advertisments = [];
   var putObjectToArray = function () {
     for (var j = 0; j < IMG_COUNT; j++) {
@@ -65,6 +83,7 @@
   };
   putObjectToArray();// Сборка массива из 8 объектов
   window.data = {
-    advertismentsArr: advertisments
+    advertismentsArr: advertisments,
+    getRusLodgeType: getRusLodgeType
   };
 })();

@@ -18,30 +18,24 @@
     pin.appendChild(image);
     return pin;
   };
-  var getRusLodgeType = function (type) {
-    var rusLodgeType = '';
-    switch (type) {
-      case 'flat':
-        rusLodgeType = 'Квартира';
-        break;
-      case 'house':
-        rusLodgeType = 'Дом';
-        break;
-      case 'bungalo':
-        rusLodgeType = 'Бунгало';
-        break;
-      default:
-        rusLodgeType = 'Тип не указан';
-    }
-    return rusLodgeType;
-  };
   // Создание фрагмента и запись массива меток в него
   var fragment = document.createDocumentFragment();
-  for (var j = 0; j < window.data.advertismentsArr.length; j++) {
-    fragment.appendChild(createMapPin(j));
-  }
+  var fillFragment = function () {
+    for (var j = 0; j < window.data.advertismentsArr.length; j++) {
+      fragment.appendChild(createMapPin(j));
+    }
+  };
   // Активность меток
   var pinElements = document.querySelectorAll('.pin:not(.pin__main)');
+  var findCurrentPinIndex = function (currentPin) {
+    var currentPinIndex;
+    for (var i = 0; i < pinElements.length; i++) {
+      if (currentPin === pinElements[i]) {
+        currentPinIndex = i;
+      }
+    }
+    return currentPinIndex;
+  };
   var deactivatePins = function () {
     for (var i = 0; i < pinElements.length; i++) {
       pinElements[i].classList.remove('pin--active');
@@ -51,24 +45,24 @@
     deactivatePins();
     currentPin.classList.add('pin--active');
   };
-  var pinEventHandler = function (event) {
-    if (event.keyCode === window.constants.ENTER_KEY || event.type === 'click') {
+  var pinEventHandler = function (e) {
+    if (e.keyCode === window.constants.ENTER_KEY || e.type === 'click') {
       deactivatePins();
-      checkPinActive(event.currentTarget);
+      checkPinActive(e.currentTarget);
+      window.card.addCurrentInfo(findCurrentPinIndex(e.currentTarget));
     }
   };
-  var closeEventHandler = function (event) {
-    if (event.keyCode === window.constants.ENTER_KEY || event.type === 'click') {
-      deactivatePins();
-    }
+  var addEvtListenerToPins = function (pinEl) {
+    pinEl.addEventListener('click', pinEventHandler);
+    pinEl.addEventListener('keydown', pinEventHandler);
   };
+  pinElements.forEach(addEvtListenerToPins);
+  /*
   for (var i = 0; i < pinElements.length; i++) {
     pinElements[i].addEventListener('click', pinEventHandler);
     pinElements[i].addEventListener('keydown', pinEventHandler);
   }
-  var dialogCloseBtn = window.card.dialogCloseBtn;
-  dialogCloseBtn.addEventListener('click', closeEventHandler);
-  dialogCloseBtn.addEventListener('keydown', closeEventHandler);
+  */
   // Событие ESCAPE
   document.addEventListener('keydown', function (event) {
     if (event.keyCode === window.constants.ESCAPE_KEY) {
@@ -76,6 +70,7 @@
     }
   });
   window.pin = {
-    fragment: fragment
+    fillFragment: fillFragment,
+    deactivatePins: deactivatePins
   };
 })();
