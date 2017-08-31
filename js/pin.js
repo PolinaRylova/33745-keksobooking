@@ -19,14 +19,19 @@
     return pin;
   };
   // Создание фрагмента и запись массива меток в него
-  var fragment = document.createDocumentFragment();
   var fillFragment = function () {
+    var fragment = document.createDocumentFragment();
     for (var j = 0; j < window.data.advertismentsArr.length; j++) {
       fragment.appendChild(createMapPin(j));
     }
+    return fragment;
   };
   // Активность меток
-  var pinElements = document.querySelectorAll('.pin:not(.pin__main)');
+  var pinElements = [];
+  var findRenderedPins = function () {
+    pinElements = document.querySelectorAll('.pin:not(.pin__main)');
+    pinElements.forEach(addEvtListenerToPins);
+  };
   var findCurrentPinIndex = function (currentPin) {
     var currentPinIndex;
     for (var i = 0; i < pinElements.length; i++) {
@@ -56,13 +61,6 @@
     pinEl.addEventListener('click', pinEventHandler);
     pinEl.addEventListener('keydown', pinEventHandler);
   };
-  pinElements.forEach(addEvtListenerToPins);
-  /*
-  for (var i = 0; i < pinElements.length; i++) {
-    pinElements[i].addEventListener('click', pinEventHandler);
-    pinElements[i].addEventListener('keydown', pinEventHandler);
-  }
-  */
   // Событие ESCAPE
   document.addEventListener('keydown', function (event) {
     if (event.keyCode === window.constants.ESCAPE_KEY) {
@@ -71,6 +69,7 @@
   });
   window.pin = {
     fillFragment: fillFragment,
+    findRenderedPins: findRenderedPins,
     deactivatePins: deactivatePins
   };
 })();
