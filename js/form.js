@@ -1,13 +1,13 @@
 'use strict';
+(function () {
+})();
 // Form validation
-var ERROR_RED_SHADOW = '0 0 5px 2px red';
-var addressField = document.querySelector('#address');
-var titleField = document.querySelector('#title');
-var priceField = document.querySelector('#price');
+var titleField = window.map.noticeForm.querySelector('#title');
+var priceField = window.map.noticeForm.querySelector('#price');
 var checkValidity = function (field) {
   var currentField = field;
   if (!currentField.validity.valid) {
-    currentField.style.boxShadow = ERROR_RED_SHADOW;
+    currentField.style.boxShadow = window.map.errorStyle;
     if (currentField.validity.valueMissing) {
       currentField.setCustomValidity('Заполните поле, пожалуйста');
     } else if (currentField.validity.tooShort || currentField.value.length < currentField.minLength) {
@@ -22,11 +22,11 @@ var checkValidity = function (field) {
     }
   }
 };
-addressField.addEventListener('invalid', function () {
-  checkValidity(addressField);
+window.map.addressField.addEventListener('invalid', function () {
+  checkValidity(window.map.addressField);
 });
-addressField.addEventListener('change', function () {
-  checkValidity(addressField);
+window.map.addressField.addEventListener('change', function () {
+  checkValidity(window.map.addressField);
 });
 titleField.addEventListener('invalid', function () {
   checkValidity(titleField);
@@ -45,11 +45,11 @@ priceField.addEventListener('change', function () {
   checkValidity(priceField);
 });
 // Fields dependencies
-var timeinSelect = document.querySelector('#timein');
-var timeoutSelect = document.querySelector('#timeout');
-var typeSelect = document.querySelector('#type');
-var roomNumSelect = document.querySelector('#room_number');
-var capacitySelect = document.querySelector('#capacity');
+var timeinSelect = window.map.noticeForm.querySelector('#timein');
+var timeoutSelect = window.map.noticeForm.querySelector('#timeout');
+var typeSelect = window.map.noticeForm.querySelector('#type');
+var roomNumSelect = window.map.noticeForm.querySelector('#room_number');
+var capacitySelect = window.map.noticeForm.querySelector('#capacity');
 
 var synchronizeTimeinAndTimeout = function (masterSelect, dependentSelect) {
   dependentSelect[masterSelect.selectedIndex].selected = true;
@@ -136,20 +136,19 @@ capacitySelect.addEventListener('change', function (e) {
   synchronizeRoomNumAndCapacity(e.target, roomNumSelect);
 });
 // Обработка события клика по submit и сброс
-var noticeForm = document.querySelector('.notice__form');
-var formSubmit = document.querySelector('.form__submit');
+var formSubmit = window.map.noticeForm.querySelector('.form__submit');
 formSubmit.addEventListener('click', function () {
-  var formFields = noticeForm.elements;
+  var formFields = window.map.noticeForm.elements;
   for (var index = 0; index < formFields.length; index++) {
     formFields[index].style.boxShadow = '';
     if (!formFields[index].validity.valid) {
-      formFields[index].style.boxShadow = ERROR_RED_SHADOW;
+      formFields[index].style.boxShadow = window.map.errorStyle;
       return;
     }
   }
-  noticeForm.submit();
+  window.map.noticeForm.submit();
 });
-noticeForm.addEventListener('submit', function (e) {
+window.map.noticeForm.addEventListener('submit', function (e) {
   e.preventDefault();
-  noticeForm.reset();
+  window.map.noticeForm.reset();
 });
