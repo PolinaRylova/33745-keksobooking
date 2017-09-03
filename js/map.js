@@ -78,7 +78,7 @@
   var mapWidth = map.clientWidth;
   var mapHeight = map.clientHeight;
   // Создаем объект для допустимых координат
-  var minAndMaxCoords = {
+  var availableCoords = {
     minX: map.offsetLeft + pinMainWidth / 2,
     minY: pinMainHeight,
     maxX: mapWidth + map.offsetLeft - pinMainWidth / 2,
@@ -90,29 +90,29 @@
   // Задаём ему значение по умолчанию
   addressField.value = 'x: ' + defaultPinMainCoords.x + ', y: ' + defaultPinMainCoords.y;
   // Добавляем обработчик события зажатия мыши
-  pinMain.addEventListener('mousedown', function (downEvt) {
-    downEvt.preventDefault();
+  pinMain.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
     // Сохраняем начальные координаты
     var startCoords = {
-      x: downEvt.clientX,
-      y: downEvt.clientY
+      x: evt.clientX,
+      y: evt.clientY
     };
     // Объявляем функцию, которая вызовется при движении мыши
-    var mouseMoveHandler = function (moveEvt) {
-      moveEvt.preventDefault();
+    var mouseMoveHandler = function (e) {
+      e.preventDefault();
       // Удаляем подсветку поля
       addressField.style.boxShadow = '';
       // Проверяем, не выходим ли мы за пределы карты
-      if (moveEvt.clientX <= minAndMaxCoords.maxX && moveEvt.clientX >= minAndMaxCoords.minX && moveEvt.clientY <= minAndMaxCoords.maxY && moveEvt.clientY >= minAndMaxCoords.minY) {
+      if (e.clientX <= availableCoords.maxX && e.clientX >= availableCoords.minX && e.clientY <= availableCoords.maxY && e.clientY >= availableCoords.minY) {
         // Сохраняем координаты сдвига
         var shift = {
-          x: startCoords.x - moveEvt.clientX,
-          y: startCoords.y - moveEvt.clientY
+          x: startCoords.x - e.clientX,
+          y: startCoords.y - e.clientY
         };
         // Перезаписываем начальные координаты
         startCoords = {
-          x: moveEvt.clientX,
-          y: moveEvt.clientY
+          x: e.clientX,
+          y: e.clientY
         };
         // Перемещаем метку на карте
         pinMain.style.left = (pinMain.offsetLeft - shift.x) + 'px';
@@ -125,15 +125,15 @@
         // Меняем значение в поле адреса
         addressField.value = 'x: ' + shiftedPinMainCoords.x + ', y: ' + shiftedPinMainCoords.y;
       } else {
-        map.addEventListener('dragover', function (e) {
-          e.preventDefault();
+        map.addEventListener('dragover', function (event) {
+          event.preventDefault();
           return true;
         });
       }
     };
     // Объявляем функцию, которая вызовется при отпускании мыши
-    var mouseUpHandler = function (upEvt) {
-      upEvt.preventDefault();
+    var mouseUpHandler = function (ev) {
+      ev.preventDefault();
       // Удаляем обработчики событий движения и отпускания мыши
       document.removeEventListener('mousemove', mouseMoveHandler);
       document.removeEventListener('mouseup', mouseUpHandler);
@@ -151,7 +151,7 @@
     var inputedCoordX = Number(inputStringArr[1]);
     var inputedCoordY = Number(inputStringArr[3]);
     // Проверяем, чтобы вводимые значения не выходили за пределы карты
-    if (inputedCoordX >= minAndMaxCoords.minX && inputedCoordY >= minAndMaxCoords.minY && inputedCoordX <= minAndMaxCoords.maxX && inputedCoordY <= minAndMaxCoords.maxY) {
+    if (inputedCoordX >= availableCoords.minX && inputedCoordY >= availableCoords.minY && inputedCoordX <= availableCoords.maxX && inputedCoordY <= availableCoords.maxY) {
       // Удаляем подсветку поля
       addressField.style.boxShadow = '';
       // Перемещаем метку в соответствии с введенными координатами и размером метки
