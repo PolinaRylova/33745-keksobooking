@@ -41,6 +41,7 @@
     dialogClose.addEventListener('keydown', callback);
   };
   window.card = {
+    offerDialog: offerDialog,
     addCurrentInfo: addCurrentInfo,
     lodgeEl: fillLodge,
     hideDialog: hideDialog,
