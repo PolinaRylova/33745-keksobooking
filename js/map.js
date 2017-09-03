@@ -48,7 +48,7 @@
   // Показ/сокрытие карточки
   var dialogClose = window.createCard.offerDialog.querySelector('.dialog__close');
   var hideDialogAndDeactivatePin = function (element) {
-    deactivatePin(findActivePin);
+    deactivatePin(findActivePin());
     element.classList.add('hidden');
   };
   var showDialog = function (element) {
@@ -60,12 +60,12 @@
     element.appendChild(window.createCard.lodgeEl(window.data.advertismentsArr[currentPinIndex]));
     showDialog(element);
   };
-  window.showCard(dialogClose, window.createCard.offerDialog, hideDialogAndDeactivatePin());
   // Навешиваем на каждый элемент массива обработчик событий
   for (var i = 0; i < pinElements.length; i++) {
     window.showCard(pinElements[i], window.createCard.offerDialog, changeCurrentInfo);
     window.activatePin(pinElements[i], changeActivePin);
   }
+  window.showCard(dialogClose, window.createCard.offerDialog, hideDialogAndDeactivatePin);
   // Событие ESCAPE
   document.addEventListener('keydown', function (e) {
     if (e.keyCode === window.constants.ESCAPE_KEY) {

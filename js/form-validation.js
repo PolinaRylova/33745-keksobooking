@@ -52,18 +52,13 @@
   var typeSelect = window.map.noticeForm.querySelector('#type');
   var roomNumSelect = window.map.noticeForm.querySelector('#room_number');
   var capacitySelect = window.map.noticeForm.querySelector('#capacity');
-
   var synchronizeTimeinAndTimeout = function (masterSelect, dependentSelect) {
     dependentSelect[masterSelect.selectedIndex].selected = true;
   };
-  timeinSelect.addEventListener('change', function (e) {
-    synchronizeTimeinAndTimeout(e.target, timeoutSelect);
-  });
-  timeoutSelect.addEventListener('change', function (e) {
-    synchronizeTimeinAndTimeout(e.target, timeinSelect);
-  });
-  var synchronizeTypeAndMinPrice = function (targetSelectedIndex) {
-    var selectedPriceIndex = targetSelectedIndex;
+  window.synchronizeFields(timeinSelect, synchronizeTimeinAndTimeout, timeoutSelect);
+  window.synchronizeFields(timeoutSelect, synchronizeTimeinAndTimeout, timeinSelect);
+  var synchronizeTypeAndMinPrice = function (masterSelect, dependentSelect) {
+    var selectedPriceIndex = masterSelect.selectedIndex;
     var minPrice;
     switch (selectedPriceIndex) {
       case 0:
@@ -79,11 +74,9 @@
         minPrice = 10000;
         break;
     }
-    priceField.setAttribute('min', minPrice);
+    dependentSelect.setAttribute('min', minPrice);
   };
-  typeSelect.addEventListener('change', function (e) {
-    synchronizeTypeAndMinPrice(e.target.selectedIndex);
-  });
+  window.synchronizeFields(typeSelect, synchronizeTypeAndMinPrice, priceField);
   var synchronizeRoomNumAndCapacity = function (masterSelect, dependentSelect) {
     var selectedMasterIndex = masterSelect.selectedIndex;
     var dependentIndex;
@@ -131,12 +124,8 @@
       dependentSelect[dependentIndex].selected = true;
     }
   };
-  roomNumSelect.addEventListener('change', function (e) {
-    synchronizeRoomNumAndCapacity(e.target, capacitySelect);
-  });
-  capacitySelect.addEventListener('change', function (e) {
-    synchronizeRoomNumAndCapacity(e.target, roomNumSelect);
-  });
+  window.synchronizeFields(roomNumSelect, synchronizeRoomNumAndCapacity, capacitySelect);
+  window.synchronizeFields(capacitySelect, synchronizeRoomNumAndCapacity, roomNumSelect);
   // Обработка события клика по submit и сброс
   var formSubmit = window.map.noticeForm.querySelector('.form__submit');
   formSubmit.addEventListener('click', function () {
