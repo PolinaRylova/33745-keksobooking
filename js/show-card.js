@@ -1,22 +1,14 @@
 'use strict';
 // Модуль для отображения/сокрытия карточки
 (function () {
-  window.showCard = function (element, doSomething) {
-    element.addEventListener('click', function () {
-      doSomething();
+  window.showCard = function (clickedElement, changedElement, changeElement) {
+    clickedElement.addEventListener('click', function (e) {
+      changedElement(changedElement, e.currentTarget);
     });
-    element.addEventListener('keydown', function () {
-      doSomething();
+    clickedElement.addEventListener('keydown', function (e) {
+      if (e.keyCode === window.constants.ENTER_KEY) {
+        changedElement(changedElement, e.currentTarget);
+      }
     });
   };
-  /*
-  window.showCard = function (currentPinIndex) {
-    window.createCard.offerDialog.appendChild(window.createCard.lodgeEl(window.data.advertismentsArr[currentPinIndex]));
-    window.createCard.offerDialog.classList.remove('hidden');
-  };
-  var dialogClose = window.createCard.offerDialog.querySelector('.dialog__close');
-  window.hideCard = function (clickedElement, ) {
-    window.createCard.offerDialog.classList.add('hidden');
-  };
-  */
 })();

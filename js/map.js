@@ -4,7 +4,7 @@
   var fillFragment = function () {
     var fragment = document.createDocumentFragment();
     for (var j = 0; j < window.data.advertismentsArr.length; j++) {
-      fragment.appendChild(window.pin.createMapPin(j));
+      fragment.appendChild(window.pin.createPin(j));
     }
     return fragment;
   };
@@ -33,35 +33,44 @@
     }
     return currentPinIndex;
   };
-  // Объявляем функцию, которая будет вызвана при событии на метке
-  var pinEventHandler = function (e) {
-    if (e.keyCode === window.constants.ENTER_KEY || e.type === 'click') {
-      window.pin.deactivatePin(findActivePin());
-      window.pin.activatePin(e.currentTarget);
-      window.card.addCurrentInfo(findCurrentPinIndex(e.currentTarget));
+  // Работа с активностью метки
+  var deactivatePin = function (activePin) {
+    if (activePin !== null) {
+      activePin.classList.remove('pin--active');
     }
   };
+  var changeActivePin = function (currentPin) {
+    deactivatePin(findActivePin());
+    currentPin.classList.add('pin--active');
+  };
+  // Заполняем элемент карточки первым элементом из сгенерированного массива
+  window.createCard.offerDialog.appendChild(window.createCard.lodgeEl(window.data.advertismentsArr[0]));
+  // Показ/сокрытие карточки
+  var dialogClose = window.createCard.offerDialog.querySelector('.dialog__close');
+  var hideDialogAndDeactivatePin = function (element) {
+    deactivatePin(findActivePin);
+    element.classList.add('hidden');
+  };
+  var showDialog = function (element) {
+    element.classList.remove('hidden');
+  };
+  // Обновление информации в карточке в соответствии с текущей меткой
+  var changeCurrentInfo = function (element, currentPin) {
+    var currentPinIndex = findCurrentPinIndex(currentPin);
+    element.appendChild(window.createCard.lodgeEl(window.data.advertismentsArr[currentPinIndex]));
+    showDialog(element);
+  };
+  window.showCard(dialogClose, window.createCard.offerDialog, hideDialogAndDeactivatePin());
   // Навешиваем на каждый элемент массива обработчик событий
   for (var i = 0; i < pinElements.length; i++) {
-    window.pin.addEvtListenersToPin(pinElements[i], pinEventHandler);
+    window.showCard(pinElements[i], window.createCard.offerDialog, changeCurrentInfo);
+    window.activatePin(pinElements[i], changeActivePin);
   }
-  // Объявляем функцию, которая будет вызвана при событии на крестике карточки
-  var closeEventHandler = function (e) {
-    if (e.keyCode === window.constants.ENTER_KEY || e.type === 'click') {
-      window.card.hideDialog();
-      window.pin.deactivatePin(findActivePin());
-    }
-  };
-  // Навешиваем на крестик карточки обработчик событий
-  window.card.addEvtListenersToCard(closeEventHandler);
-  // Заполняем элемент карточки первым элементом из сгенерированного массива
-  var offerDialog = document.querySelector('#offer-dialog');
-  offerDialog.appendChild(window.card.lodgeEl(window.data.advertismentsArr[0]));
   // Событие ESCAPE
   document.addEventListener('keydown', function (e) {
     if (e.keyCode === window.constants.ESCAPE_KEY) {
-      window.card.hideDialog();
-      window.pin.deactivatePin(findActivePin());
+      hideDialogAndDeactivatePin(window.createCard.offerDialog);
+      deactivatePin(findActivePin());
     }
   });
   // Находим метку заполняемого объявления, ширину и высоту элемента
