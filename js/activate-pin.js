@@ -1,13 +1,13 @@
 'use strict';
 // Модуль для активации и реактивации меток
 (function () {
-  window.activatePin = function (element, doSomething) {
+  window.activatePin = function (element, changeActivity) {
     element.addEventListener('click', function (e) {
-      doSomething(e.currentTarget);
+      changeActivity(e.currentTarget);
     });
     element.addEventListener('keydown', function (e) {
       if (e.keyCode === window.constants.ENTER_KEY) {
-        doSomething(e.currentTarget);
+        changeActivity(e.currentTarget);
       }
     });
   };
