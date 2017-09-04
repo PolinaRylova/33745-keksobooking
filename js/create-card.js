@@ -24,26 +24,8 @@
     offerDialog.querySelector('.dialog__title > img').setAttribute('src', lodge.author.avatar);
     return lodgeElement;
   };
-  // Показ/сокрытие карточки
-  var dialogClose = offerDialog.querySelector('.dialog__close');
-  var showDialog = function () {
-    offerDialog.classList.remove('hidden');
-  };
-  var hideDialog = function () {
-    offerDialog.classList.add('hidden');
-  };
-  var addCurrentInfo = function (currentPinIndex) {
-    offerDialog.appendChild(fillLodge(window.data.advertismentsArr[currentPinIndex]));
-    showDialog();
-  };
-  var addEvtListenersToCard = function (callback) {
-    dialogClose.addEventListener('click', callback);
-    dialogClose.addEventListener('keydown', callback);
-  };
-  window.card = {
-    addCurrentInfo: addCurrentInfo,
-    lodgeEl: fillLodge,
-    hideDialog: hideDialog,
-    addEvtListenersToCard: addEvtListenersToCard
+  window.createCard = {
+    offerDialog: offerDialog,
+    lodgeEl: fillLodge
   };
 })();
