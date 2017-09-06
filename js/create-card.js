@@ -26,6 +26,6 @@
   };
   window.createCard = {
     offerDialog: offerDialog,
-    lodgeEl: fillLodge
+    fillLodge: fillLodge
   };
 })();

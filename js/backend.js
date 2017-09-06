@@ -1,12 +1,12 @@
 'use strict';
 (function () {
   var SERVER_URL = 'https://1510.dump.academy/keksobooking';
-  var setup = function (successHandler, errorHandler) {
+  var setup = function (loadHandler, errorHandler) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.addEventListener('load', function () {
       if (xhr.status === 200) {
-        successHandler(xhr.response);
+        loadHandler(xhr.response);
       } else {
         errorHandler(xhr.response);
       }
@@ -21,32 +21,19 @@
     return xhr;
   };
   window.backend = {
-    save: function (data, successHandler, errorHandler) {
-      var xhr = setup(successHandler, errorHandler);
+    save: function (data, loadHandler, errorHandler) {
+      var xhr = setup(loadHandler, errorHandler);
       xhr.open('POST', SERVER_URL);
       xhr.send(data);
     },
-    load: function (successHandler, errorHandler) {
-      var xhr = setup(successHandler, errorHandler);
+    load: function (loadHandler, errorHandler) {
+      var xhr = setup(loadHandler, errorHandler);
       xhr.open('GET', SERVER_URL + '/data');
       xhr.send();
     },
     error: function (message) {
       var errorBlock = document.createElement('div');
-      errorBlock.style.width = 50 + '%';
-      errorBlock.style.height = 50 + 'px';
-      errorBlock.style.position = 'fixed';
-      errorBlock.style.top = 50 + '%';
-      errorBlock.style.left = 50 + '%';
-      errorBlock.style.transform = 'translate(-50%, -50%)';
-      errorBlock.style.zIndex = 5;
-      errorBlock.style.display = 'flex';
-      errorBlock.style.alignItems = 'center';
-      errorBlock.style.justifyContent = 'center';
-      errorBlock.style.backgroundColor = '#ffffff';
-      errorBlock.style.border = '3px solid #ff5635';
-      errorBlock.style.borderRadius = 50 + '%';
-      errorBlock.style.color = '#ff5635';
+      errorBlock.classList.add('error-message');
       errorBlock.textContent = message;
       document.body.insertAdjacentElement('afterbegin', errorBlock);
     }

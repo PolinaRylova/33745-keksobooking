@@ -25,7 +25,7 @@
     }
   }, window.backend.error);
   window.data = {
-    advertismentsArr: advertisments,
+    advertisments: advertisments,
     getRusLodgeType: getRusLodgeType
   };
 })();

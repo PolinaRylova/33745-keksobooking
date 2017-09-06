@@ -3,7 +3,7 @@
   // Создание фрагмента и запись массива меток в него
   var fillFragment = function () {
     var fragment = document.createDocumentFragment();
-    for (var j = 0; j < window.data.advertismentsArr.length; j++) {
+    for (var j = 0; j < window.data.advertisments.length; j++) {
       fragment.appendChild(window.pin.createPin(j));
     }
     return fragment;
@@ -44,7 +44,7 @@
     currentPin.classList.add('pin--active');
   };
   // Заполняем элемент карточки первым элементом из сгенерированного массива
-  window.createCard.offerDialog.appendChild(window.createCard.lodgeEl(window.data.advertismentsArr[0]));
+  window.createCard.offerDialog.appendChild(window.createCard.fillLodge(window.data.advertisments[0]));
   // Показ/сокрытие карточки
   var dialogClose = window.createCard.offerDialog.querySelector('.dialog__close');
   var hideDialogAndDeactivatePin = function (element) {
@@ -57,7 +57,7 @@
   // Обновление информации в карточке в соответствии с текущей меткой
   var changeCurrentInfo = function (element, currentPin) {
     var currentPinIndex = findCurrentPinIndex(currentPin);
-    element.appendChild(window.createCard.lodgeEl(window.data.advertismentsArr[currentPinIndex]));
+    element.appendChild(window.createCard.fillLodge(window.data.advertisments[currentPinIndex]));
     showDialog(element);
   };
   // Навешиваем на каждый элемент массива обработчик событий

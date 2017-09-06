@@ -4,7 +4,7 @@
   var createPin = function (index) {
     var pin = document.createElement('div');
     var image = document.createElement('img');
-    var data = window.data.advertismentsArr[index];
+    var data = window.data.advertisments[index];
     var pinPositionX = data.location.x + (image.offsetWidth / 2);
     var pinPositionY = data.location.y + image.offsetHeight;
     pin.classList.add('pin');
