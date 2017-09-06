@@ -126,9 +126,8 @@
   };
   window.synchronizeFields(roomNumSelect, synchronizeRoomNumAndCapacity, capacitySelect);
   window.synchronizeFields(capacitySelect, synchronizeRoomNumAndCapacity, roomNumSelect);
-  // Обработка события клика по submit и сброс
-  var formSubmit = window.map.noticeForm.querySelector('.form__submit');
-  formSubmit.addEventListener('click', function () {
+  // Обработка события submit и сброс
+  window.map.noticeForm.addEventListener('submit', function (e) {
     var formFields = window.map.noticeForm.elements;
     for (var index = 0; index < formFields.length; index++) {
       formFields[index].style.boxShadow = '';
@@ -137,10 +136,9 @@
         return;
       }
     }
-    window.map.noticeForm.submit();
-  });
-  window.map.noticeForm.addEventListener('submit', function (e) {
+    window.backend.save(new FormData(window.map.noticeForm), function () {
+      window.map.noticeForm.reset();
+    }, window.backend.error);
     e.preventDefault();
-    window.map.noticeForm.reset();
   });
 })();
