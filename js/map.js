@@ -1,18 +1,25 @@
 'use strict';
 (function () {
   // Создание фрагмента и запись массива меток в него
-  var fillFragment = function () {
+  var fillFragment = function (advertisments) {
     var fragment = document.createDocumentFragment();
-    for (var j = 0; j < window.data.advertisments.length; j++) {
-      fragment.appendChild(window.pin.createPin(j));
+    for (var j = 0; j < advertisments.length; j++) {
+      fragment.appendChild(window.pin.createPin(advertisments[j]));
     }
     return fragment;
   };
-  // Отрисовка меток в блок
+  // Отрисовка меток на карте и заполнение карточки первым элементом из загруженного массива
   var pinMap = document.querySelector('.tokyo__pin-map');
-  pinMap.appendChild(fillFragment());
-  // Находим массив отрисованных меток
-  var pinElements = document.querySelectorAll('.pin:not(.pin__main)');
+  // Объявляем переменную для хранения массива отрисованных меток
+  var pinElements = [];
+  window.backend.load(function (data) {
+    window.data.setAdvertisments(data);
+    pinMap.appendChild(fillFragment(window.data.advertisments));
+    window.createCard.offerDialog.appendChild(window.createCard.fillLodge(window.data.advertisments[0]));
+    pinElements = document.querySelectorAll('.pin:not(.pin__main)');
+    pinElements[0].classList.add('pin--active');
+    addEventHandlersToElements(pinElements);
+  }, window.backend.error);
   // Находим активный пин
   var findActivePin = function () {
     var activePin = null;
@@ -43,8 +50,6 @@
     deactivatePin(findActivePin());
     currentPin.classList.add('pin--active');
   };
-  // Заполняем элемент карточки первым элементом из сгенерированного массива
-  window.createCard.offerDialog.appendChild(window.createCard.fillLodge(window.data.advertisments[0]));
   // Показ/сокрытие карточки
   var dialogClose = window.createCard.offerDialog.querySelector('.dialog__close');
   var hideDialogAndDeactivatePin = function (element) {
@@ -61,10 +66,12 @@
     showDialog(element);
   };
   // Навешиваем на каждый элемент массива обработчик событий
-  for (var i = 0; i < pinElements.length; i++) {
-    window.showCard(pinElements[i], window.createCard.offerDialog, changeCurrentInfo);
-    window.activatePin(pinElements[i], changeActivePin);
-  }
+  var addEventHandlersToElements = function (elements) {
+    for (var i = 0; i < elements.length; i++) {
+      window.showCard(elements[i], window.createCard.offerDialog, changeCurrentInfo);
+      window.activatePin(elements[i], changeActivePin);
+    }
+  };
   window.showCard(dialogClose, window.createCard.offerDialog, hideDialogAndDeactivatePin);
   // Событие ESCAPE
   document.addEventListener('keydown', function (e) {
