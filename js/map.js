@@ -12,14 +12,40 @@
   var pinMap = document.querySelector('.tokyo__pin-map');
   // Объявляем переменную для хранения массива отрисованных меток
   var pinElements = [];
-  window.backend.load(function (data) {
+  var loadHandler = function (data) {
     window.data.setAdvertisments(data);
     pinMap.appendChild(fillFragment(window.data.advertisments));
     window.createCard.offerDialog.appendChild(window.createCard.fillLodge(window.data.advertisments[0]));
     pinElements = document.querySelectorAll('.pin:not(.pin__main)');
     pinElements[0].classList.add('pin--active');
     addEventHandlersToElements(pinElements);
-  }, window.backend.error);
+  };
+  var errorHandler = function (message) {
+    var errorBlock = document.createElement('div');
+    errorBlock.classList.add('error-message');
+    errorBlock.textContent = message;
+    document.body.insertAdjacentElement('afterBegin', errorBlock);
+    var closeBtn = document.createElement('a');
+    closeBtn.setAttribute('href', '#');
+    closeBtn.setAttribute('tabindex', '1');
+    closeBtn.classList.add('error-close');
+    closeBtn.innerHTML = '<img src="img/close.svg" alt="close" width="15" height="15">';
+    errorBlock.insertAdjacentElement('afterBegin', closeBtn);
+    closeBtn.addEventListener('click', function () {
+      errorBlock.remove();
+    });
+    var reloadBtn = document.createElement('a');
+    reloadBtn.setAttribute('href', '#');
+    reloadBtn.setAttribute('tabindex', '1');
+    reloadBtn.textContent = 'Повторить';
+    reloadBtn.classList.add('reload-btn');
+    errorBlock.insertAdjacentElement('beforeEnd', reloadBtn);
+    reloadBtn.addEventListener('click', function () {
+      errorBlock.remove();
+      window.backend.load(loadHandler, errorHandler);
+    });
+  };
+  window.backend.load(loadHandler, errorHandler);
   // Находим активный пин
   var findActivePin = function () {
     var activePin = null;

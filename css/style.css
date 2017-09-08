@@ -688,3 +688,7 @@ select option:hover {
   top: 4px;
   right: 4px;
 }
+
+.reload-btn {
+  margin-left: 10px;
+}
