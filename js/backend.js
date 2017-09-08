@@ -35,7 +35,17 @@
       var errorBlock = document.createElement('div');
       errorBlock.classList.add('error-message');
       errorBlock.textContent = message;
-      document.body.insertAdjacentElement('afterbegin', errorBlock);
+      document.body.insertAdjacentElement('afterBegin', errorBlock);
+      var closeBtn = document.createElement('a');
+      closeBtn.setAttribute('href', '#');
+      closeBtn.setAttribute('tabindex', '1');
+      closeBtn.classList.add('error-close');
+      closeBtn.innerHTML = '<img src="img/close.svg" alt="close" width="15" height="15">';
+      errorBlock.insertAdjacentElement('afterBegin', closeBtn);
+      closeBtn.addEventListener('click', function () {
+        errorBlock.remove();
+      });
+      // beforeEnd
     }
   };
 })();

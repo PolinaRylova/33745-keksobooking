@@ -667,12 +667,12 @@ select option:hover {
 }
 
 .error-message {
-  width: 50%;
+  width: 30%;
   height: 50px;
   color: #ff5635;
   background-color: #ffffff;
   border: 3px solid #ff5635;
-  border-radius: 50%;
+  border-radius: 5px;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -681,4 +681,10 @@ select option:hover {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.error-close {
+  position: absolute;
+  top: 4px;
+  right: 4px;
 }
