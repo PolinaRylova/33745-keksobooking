@@ -1,18 +1,51 @@
 'use strict';
 (function () {
   // Создание фрагмента и запись массива меток в него
-  var fillFragment = function () {
+  var fillFragment = function (advertisments) {
     var fragment = document.createDocumentFragment();
-    for (var j = 0; j < window.data.advertismentsArr.length; j++) {
-      fragment.appendChild(window.pin.createPin(j));
+    for (var j = 0; j < advertisments.length; j++) {
+      fragment.appendChild(window.pin.createPin(advertisments[j]));
     }
     return fragment;
   };
-  // Отрисовка меток в блок
+  // Отрисовка меток на карте и заполнение карточки первым элементом из загруженного массива
   var pinMap = document.querySelector('.tokyo__pin-map');
-  pinMap.appendChild(fillFragment());
-  // Находим массив отрисованных меток
-  var pinElements = document.querySelectorAll('.pin:not(.pin__main)');
+  // Объявляем переменную для хранения массива отрисованных меток
+  var pinElements = [];
+  var loadHandler = function (data) {
+    window.data.setAdvertisments(data);
+    pinMap.appendChild(fillFragment(window.data.advertisments));
+    window.createCard.offerDialog.appendChild(window.createCard.fillLodge(window.data.advertisments[0]));
+    pinElements = document.querySelectorAll('.pin:not(.pin__main)');
+    pinElements[0].classList.add('pin--active');
+    addEventHandlersToElements(pinElements);
+  };
+  var errorHandler = function (message) {
+    var errorBlock = document.createElement('div');
+    errorBlock.classList.add('error-message');
+    errorBlock.textContent = message;
+    document.body.insertAdjacentElement('afterBegin', errorBlock);
+    var closeBtn = document.createElement('a');
+    closeBtn.setAttribute('href', '#');
+    closeBtn.setAttribute('tabindex', '1');
+    closeBtn.classList.add('error-close');
+    closeBtn.innerHTML = '<img src="img/close.svg" alt="close" width="15" height="15">';
+    errorBlock.insertAdjacentElement('afterBegin', closeBtn);
+    closeBtn.addEventListener('click', function () {
+      errorBlock.remove();
+    });
+    var reloadBtn = document.createElement('a');
+    reloadBtn.setAttribute('href', '#');
+    reloadBtn.setAttribute('tabindex', '1');
+    reloadBtn.textContent = 'Повторить';
+    reloadBtn.classList.add('reload-btn');
+    errorBlock.insertAdjacentElement('beforeEnd', reloadBtn);
+    reloadBtn.addEventListener('click', function () {
+      errorBlock.remove();
+      window.backend.load(loadHandler, errorHandler);
+    });
+  };
+  window.backend.load(loadHandler, errorHandler);
   // Находим активный пин
   var findActivePin = function () {
     var activePin = null;
@@ -43,8 +76,6 @@
     deactivatePin(findActivePin());
     currentPin.classList.add('pin--active');
   };
-  // Заполняем элемент карточки первым элементом из сгенерированного массива
-  window.createCard.offerDialog.appendChild(window.createCard.lodgeEl(window.data.advertismentsArr[0]));
   // Показ/сокрытие карточки
   var dialogClose = window.createCard.offerDialog.querySelector('.dialog__close');
   var hideDialogAndDeactivatePin = function (element) {
@@ -57,14 +88,16 @@
   // Обновление информации в карточке в соответствии с текущей меткой
   var changeCurrentInfo = function (element, currentPin) {
     var currentPinIndex = findCurrentPinIndex(currentPin);
-    element.appendChild(window.createCard.lodgeEl(window.data.advertismentsArr[currentPinIndex]));
+    element.appendChild(window.createCard.fillLodge(window.data.advertisments[currentPinIndex]));
     showDialog(element);
   };
   // Навешиваем на каждый элемент массива обработчик событий
-  for (var i = 0; i < pinElements.length; i++) {
-    window.showCard(pinElements[i], window.createCard.offerDialog, changeCurrentInfo);
-    window.activatePin(pinElements[i], changeActivePin);
-  }
+  var addEventHandlersToElements = function (elements) {
+    for (var i = 0; i < elements.length; i++) {
+      window.showCard(elements[i], window.createCard.offerDialog, changeCurrentInfo);
+      window.activatePin(elements[i], changeActivePin);
+    }
+  };
   window.showCard(dialogClose, window.createCard.offerDialog, hideDialogAndDeactivatePin);
   // Событие ESCAPE
   document.addEventListener('keydown', function (e) {
