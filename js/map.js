@@ -12,13 +12,23 @@
   var pinMap = document.querySelector('.tokyo__pin-map');
   // Объявляем переменную для хранения массива отрисованных меток
   var pinElements = [];
+  var refresh = function () {
+    var filteredData = window.filter(window.data.advertisments);
+    while (pinMap.childElementCount > 1) {
+      pinMap.removeChild(pinMap.lastChild);
+    }
+    window.createCard.offerDialog.querySelector('.dialog__panel').remove();
+    if (filteredData.length > 0) {
+      pinMap.appendChild(fillFragment(filteredData));
+      window.createCard.offerDialog.appendChild(window.createCard.fillLodge(filteredData[0]));
+      pinElements = document.querySelectorAll('.pin:not(.pin__main)');
+      pinElements[0].classList.add('pin--active');
+      addEventHandlersToElements(pinElements);
+    }
+  };
   var loadHandler = function (data) {
     window.data.setAdvertisments(data);
-    pinMap.appendChild(fillFragment(window.data.advertisments));
-    window.createCard.offerDialog.appendChild(window.createCard.fillLodge(window.data.advertisments[0]));
-    pinElements = document.querySelectorAll('.pin:not(.pin__main)');
-    pinElements[0].classList.add('pin--active');
-    addEventHandlersToElements(pinElements);
+    refresh();
   };
   var errorHandler = function (message) {
     var errorBlock = document.createElement('div');

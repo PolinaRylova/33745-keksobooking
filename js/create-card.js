@@ -24,7 +24,10 @@
   // Создание и заполнение DOM-элемента
   var fillLodge = function (lodge) {
     var lodgeElement = lodgeTemplateContent.cloneNode(true);
-    offerDialog.querySelector('.dialog__panel').remove();
+    var dialogPanel = offerDialog.querySelector('.dialog__panel');
+    if (dialogPanel) {
+      dialogPanel.remove();
+    }
     lodgeElement.querySelector('.lodge__title').textContent = lodge.offer.title;
     lodgeElement.querySelector('.lodge__address').textContent = lodge.offer.address;
     lodgeElement.querySelector('.lodge__price').textContent = lodge.offer.price + ' ' + '\u20BD/ночь';
