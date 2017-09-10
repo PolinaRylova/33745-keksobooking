@@ -12,8 +12,9 @@
   var pinMap = document.querySelector('.tokyo__pin-map');
   // Объявляем переменную для хранения массива отрисованных меток
   var pinElements = [];
+  var filteredData = [];
   var refresh = function () {
-    var filteredData = window.filter.doFilter(window.data.advertisments);
+    filteredData = window.filter.doFilter(window.data.advertisments);
     while (pinMap.childElementCount > 1) {
       pinMap.removeChild(pinMap.lastChild);
     }
@@ -29,7 +30,7 @@
   };
   var loadHandler = function (data) {
     window.data.setAdvertisments(data);
-    window.debounce(refresh());
+    window.debounce(refresh);
   };
   var errorHandler = function (message) {
     var errorBlock = document.createElement('div');
@@ -102,7 +103,7 @@
   // Обновление информации в карточке в соответствии с текущей меткой
   var changeCurrentInfo = function (element, currentPin) {
     var currentPinIndex = findCurrentPinIndex(currentPin);
-    element.appendChild(window.createCard.fillLodge(window.data.advertisments[currentPinIndex]));
+    element.appendChild(window.createCard.fillLodge(filteredData[currentPinIndex])); // window.data.advertisments[currentPinIndex]));
     showDialog(element);
   };
   // Навешиваем на каждый элемент массива обработчик событий
