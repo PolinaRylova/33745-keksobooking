@@ -13,14 +13,15 @@
   // Объявляем переменную для хранения массива отрисованных меток
   var pinElements = [];
   var refresh = function () {
-    var filteredData = window.filter(window.data.advertisments);
+    var filteredData = window.filter.doFilter(window.data.advertisments);
     while (pinMap.childElementCount > 1) {
       pinMap.removeChild(pinMap.lastChild);
     }
-    window.createCard.offerDialog.querySelector('.dialog__panel').remove();
+    window.createCard.offerDialog.classList.add('hidden');
     if (filteredData.length > 0) {
       pinMap.appendChild(fillFragment(filteredData));
       window.createCard.offerDialog.appendChild(window.createCard.fillLodge(filteredData[0]));
+      showDialog(window.createCard.offerDialog);
       pinElements = document.querySelectorAll('.pin:not(.pin__main)');
       pinElements[0].classList.add('pin--active');
       addEventHandlersToElements(pinElements);
@@ -28,7 +29,7 @@
   };
   var loadHandler = function (data) {
     window.data.setAdvertisments(data);
-    refresh();
+    window.debounce(refresh());
   };
   var errorHandler = function (message) {
     var errorBlock = document.createElement('div');
@@ -56,6 +57,9 @@
     });
   };
   window.backend.load(loadHandler, errorHandler);
+  window.filter.tokyoFilters.addEventListener('change', function () {
+    window.debounce(refresh);
+  });
   // Находим активный пин
   var findActivePin = function () {
     var activePin = null;

@@ -17,6 +17,12 @@
     if (diapason === 'middle') {
       return (value <= 50000) && (value >= 10000);
     }
+    if (diapason === 'low') {
+      return value < 10000;
+    }
+    if (diapason === 'high') {
+      return value > 50000;
+    }
     return false;
   };
   var checkNeedShow = function (item) {
@@ -31,12 +37,12 @@
       }
     }
     if (housingRoomNum.value !== 'any') {
-      if (housingRoomNum.value !== item.offer.rooms) {
+      if (+housingRoomNum.value !== item.offer.rooms) {
         return false;
       }
     }
     if (housingGuestsNum.value !== 'any') {
-      if (housingGuestsNum.value !== item.offer.guests) {
+      if (+housingGuestsNum.value !== item.offer.guests) {
         return false;
       }
     }
@@ -72,13 +78,16 @@
     }
     return true;
   };
-  window.filter = function (array) {
-    var filteredArray = [];
-    for (var i = 0; i < array.length; i++) {
-      if (checkNeedShow(array[i])) {
-        filteredArray.push(array[i]);
+  window.filter = {
+    tokyoFilters: tokyoFilters,
+    doFilter: function (array) {
+      var filteredArray = [];
+      for (var i = 0; i < array.length; i++) {
+        if (checkNeedShow(array[i])) {
+          filteredArray.push(array[i]);
+        }
       }
+      return filteredArray;
     }
-    return filteredArray;
   };
 })();
