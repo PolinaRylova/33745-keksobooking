@@ -25,56 +25,41 @@
         return false;
     }
   };
-  var checkNeedShow = function (item) {
-    if (housingType.value !== 'any') {
-      if (housingType.value !== item.offer.type) {
+  var checkCheckedValue = function (targetElement, dataItem) {
+    if (targetElement.checked) {
+      if (dataItem.offer.features.indexOf(targetElement.value) === -1) {
         return false;
       }
     }
+    return true;
+  };
+  var checkSelectValue = function (targetElement, dataItem) {
+    if (targetElement.value !== 'any') {
+      if (targetElement.value !== String(dataItem.offer.type)) {
+        return false;
+      }
+    }
+    return true;
+  };
+  var checkNeedShow = function (item) {
     if (housingPrice.value !== 'any') {
       if (!checkPriceInDiapason(housingPrice.value, item.offer.price)) {
         return false;
       }
     }
-    if (housingRoomNum.value !== 'any') {
-      if (+housingRoomNum.value !== item.offer.rooms) {
-        return false;
-      }
+    if (!checkSelectValue(housingType, item) &&
+      !checkSelectValue(housingRoomNum, item) &&
+      !checkSelectValue(housingGuestsNum, item)) {
+      return false;
     }
-    if (housingGuestsNum.value !== 'any') {
-      if (+housingGuestsNum.value !== item.offer.guests) {
-        return false;
-      }
-    }
-    if (housingWifi.checked) {
-      if (item.offer.features.indexOf(housingWifi.value) === -1) {
-        return false;
-      }
-    }
-    if (housingDishwasher.checked) {
-      if (item.offer.features.indexOf(housingDishwasher.value) === -1) {
-        return false;
-      }
-    }
-    if (housingParking.checked) {
-      if (item.offer.features.indexOf(housingParking.value) === -1) {
-        return false;
-      }
-    }
-    if (housingWasher.checked) {
-      if (item.offer.features.indexOf(housingWasher.value) === -1) {
-        return false;
-      }
-    }
-    if (housingElevator.checked) {
-      if (item.offer.features.indexOf(housingElevator.value) === -1) {
-        return false;
-      }
-    }
-    if (housingConditioner.checked) {
-      if (item.offer.features.indexOf(housingConditioner.value) === -1) {
-        return false;
-      }
+    if (!(checkCheckedValue(housingWifi, item)) &&
+      !(checkCheckedValue(housingDishwasher, item)) &&
+      !(checkCheckedValue(housingDishwasher, item)) &&
+      !(checkCheckedValue(housingParking, item)) &&
+      !(checkCheckedValue(housingWasher, item)) &&
+      !(checkCheckedValue(housingElevator, item)) &&
+      !(checkCheckedValue(housingConditioner, item))) {
+      return false;
     }
     return true;
   };
