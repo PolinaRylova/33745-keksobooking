@@ -33,31 +33,30 @@
     }
     return true;
   };
-  var checkSelectValue = function (targetElement, dataItem) {
+  var checkSelectValue = function (targetElement, dataItemParam) {
     if (targetElement.value !== 'any') {
-      if (targetElement.value !== String(dataItem.offer.type)) {
+      if (targetElement.value !== String(dataItemParam)) {
         return false;
       }
     }
     return true;
   };
   var checkNeedShow = function (item) {
+    if (!(checkSelectValue(housingType, item.offer.type)) ||
+      !(checkSelectValue(housingRoomNum, item.offer.rooms)) ||
+      !(checkSelectValue(housingGuestsNum, item.offer.guests))) {
+      return false;
+    }
     if (housingPrice.value !== 'any') {
       if (!checkPriceInDiapason(housingPrice.value, item.offer.price)) {
         return false;
       }
     }
-    if (!checkSelectValue(housingType, item) &&
-      !checkSelectValue(housingRoomNum, item) &&
-      !checkSelectValue(housingGuestsNum, item)) {
-      return false;
-    }
-    if (!(checkCheckedValue(housingWifi, item)) &&
-      !(checkCheckedValue(housingDishwasher, item)) &&
-      !(checkCheckedValue(housingDishwasher, item)) &&
-      !(checkCheckedValue(housingParking, item)) &&
-      !(checkCheckedValue(housingWasher, item)) &&
-      !(checkCheckedValue(housingElevator, item)) &&
+    if (!(checkCheckedValue(housingWifi, item)) ||
+      !(checkCheckedValue(housingDishwasher, item)) ||
+      !(checkCheckedValue(housingParking, item)) ||
+      !(checkCheckedValue(housingWasher, item)) ||
+      !(checkCheckedValue(housingElevator, item)) ||
       !(checkCheckedValue(housingConditioner, item))) {
       return false;
     }
