@@ -14,16 +14,16 @@
   var housingElevator = tokyoFilters.querySelector('input[value="elevator"]');
   var housingConditioner = tokyoFilters.querySelector('input[value="conditioner"]');
   var checkPriceInDiapason = function (diapason, value) {
-    if (diapason === 'middle') {
-      return (value <= 50000) && (value >= 10000);
+    switch (diapason) {
+      case 'middle':
+        return (value <= 50000) && (value >= 10000);
+      case 'low':
+        return value < 10000;
+      case 'high':
+        return value > 50000;
+      default:
+        return false;
     }
-    if (diapason === 'low') {
-      return value < 10000;
-    }
-    if (diapason === 'high') {
-      return value > 50000;
-    }
-    return false;
   };
   var checkNeedShow = function (item) {
     if (housingType.value !== 'any') {
