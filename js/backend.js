@@ -1,6 +1,5 @@
 'use strict';
 (function () {
-  var SERVER_URL = 'https://1510.dump.academy/keksobooking';
   var setup = function (loadHandler, errorHandler) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
@@ -23,12 +22,12 @@
   window.backend = {
     save: function (data, loadHandler, errorHandler) {
       var xhr = setup(loadHandler, errorHandler);
-      xhr.open('POST', SERVER_URL);
+      xhr.open('POST', window.constants.SERVER_URL);
       xhr.send(data);
     },
     load: function (loadHandler, errorHandler) {
       var xhr = setup(loadHandler, errorHandler);
-      xhr.open('GET', SERVER_URL + '/data');
+      xhr.open('GET', window.constants.SERVER_URL + '/data');
       xhr.send();
     }
   };

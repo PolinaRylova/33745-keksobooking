@@ -1,6 +1,5 @@
 'use strict';
 (function () {
-  var ADV_COUNT = 3;
   // Создание фрагмента и запись массива меток в него
   var fillFragment = function (advertisments) {
     var fragment = document.createDocumentFragment();
@@ -15,8 +14,8 @@
   var pinElements = [];
   var advertismentsForRender = [];
   var refresh = function (advCount) {
-    if (advCount === ADV_COUNT) {
-      for (var i = 0; i < ADV_COUNT; i++) {
+    if (advCount === window.constants.ADV_COUNT) {
+      for (var i = 0; i < advCount; i++) {
         advertismentsForRender.push(window.data.advertisments[i]);
       }
     } else if (void 0 === advCount) {
@@ -37,7 +36,7 @@
   };
   var loadHandler = function (data) {
     window.data.setAdvertisments(data);
-    refresh(ADV_COUNT);
+    refresh(window.constants.ADV_COUNT);
   };
   var errorHandler = function (message) {
     var errorBlock = document.createElement('div');
@@ -206,7 +205,6 @@
     document.addEventListener('mousemove', mouseMoveHandler);
     document.addEventListener('mouseup', mouseUpHandler);
   });
-  var ERROR_RED_SHADOW = '0 0 5px 2px red';
   // Добавляем обработчик события ввода в поле адреса
   addressField.addEventListener('input', function (e) {
     // Заменяем в полученной из поля адреса строке запятые на пустые строки и превращаем строку в массив, разбив ее по пробелам
@@ -224,7 +222,7 @@
     } else {
       // В случае выхода вводимых значений за диапазон возможных
       // подсвечиваем поле красным
-      addressField.style.boxShadow = ERROR_RED_SHADOW;
+      addressField.style.boxShadow = window.constants.ERROR_RED_SHADOW;
       // И возвращаем метку и значение в поле по умолчанию
       pinMain.style.left = (defaultPinMainCoords.x - pinMainWidth / 2) + 'px';
       pinMain.style.top = (defaultPinMainCoords.y - pinMainHeight) + 'px';
@@ -233,7 +231,6 @@
   });
   window.map = {
     noticeForm: noticeForm,
-    addressField: addressField,
-    errorStyle: ERROR_RED_SHADOW
+    addressField: addressField
   };
 })();
