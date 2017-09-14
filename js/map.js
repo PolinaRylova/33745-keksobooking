@@ -47,7 +47,12 @@
     closeBtn.setAttribute('href', '#');
     closeBtn.setAttribute('tabindex', '1');
     closeBtn.classList.add('error-close');
-    closeBtn.innerHTML = '<img src="img/close.svg" alt="close" width="15" height="15">';
+    var imgBlock = document.createElement('img');
+    imgBlock.setAttribute('src', 'img/close.svg');
+    imgBlock.setAttribute('alt', 'close');
+    imgBlock.style.width = 15 + 'px';
+    imgBlock.style.height = 15 + 'px';
+    closeBtn.insertAdjacentElement('afterBegin', imgBlock);
     errorBlock.insertAdjacentElement('afterBegin', closeBtn);
     closeBtn.addEventListener('click', function () {
       errorBlock.remove();
