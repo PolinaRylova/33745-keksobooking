@@ -66,11 +66,11 @@
     tokyoFilters: tokyoFilters,
     chooseElements: function (array) {
       var filteredElements = [];
-      for (var i = 0; i < array.length; i++) {
-        if (checkNeedShow(array[i])) {
-          filteredElements.push(array[i]);
+      array.forEach(function (arrayItem) {
+        if (checkNeedShow(arrayItem)) {
+          filteredElements.push(arrayItem);
         }
-      }
+      });
       return filteredElements;
     }
   };
