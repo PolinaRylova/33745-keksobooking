@@ -65,13 +65,13 @@
   window.filter = {
     tokyoFilters: tokyoFilters,
     doFilter: function (array) {
-      var filteredArray = [];
+      var filteredElements = [];
       for (var i = 0; i < array.length; i++) {
         if (checkNeedShow(array[i])) {
-          filteredArray.push(array[i]);
+          filteredElements.push(array[i]);
         }
       }
-      return filteredArray;
+      return filteredElements;
     }
   };
 })();

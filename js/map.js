@@ -13,23 +13,22 @@
   var pinMap = document.querySelector('.tokyo__pin-map');
   // Объявляем переменную для хранения массива отрисованных меток
   var pinElements = [];
-  var filteredData = [];
+  var advertismentsForRender = [];
   var refresh = function (advCount) {
-    var dataToRender = [];
     if (advCount === ADV_COUNT) {
       for (var i = 0; i < ADV_COUNT; i++) {
-        dataToRender.push(window.data.advertisments[i]);
+        advertismentsForRender.push(window.data.advertisments[i]);
       }
     } else if (void 0 === advCount) {
-      dataToRender = window.filter.doFilter(window.data.advertisments);
+      advertismentsForRender = window.filter.doFilter(window.data.advertisments);
     }
     while (pinMap.childElementCount > 1) {
       pinMap.removeChild(pinMap.lastChild);
     }
     window.createCard.offerDialog.classList.add('hidden');
-    if (dataToRender.length > 0) {
-      pinMap.appendChild(fillFragment(dataToRender));
-      window.createCard.offerDialog.appendChild(window.createCard.fillLodge(dataToRender[0]));
+    if (advertismentsForRender.length > 0) {
+      pinMap.appendChild(fillFragment(advertismentsForRender));
+      window.createCard.offerDialog.appendChild(window.createCard.fillLodge(advertismentsForRender[0]));
       showDialog(window.createCard.offerDialog);
       pinElements = document.querySelectorAll('.pin:not(.pin__main)');
       pinElements[0].classList.add('pin--active');
@@ -111,7 +110,7 @@
   // Обновление информации в карточке в соответствии с текущей меткой
   var changeCurrentInfo = function (element, currentPin) {
     var currentPinIndex = findCurrentPinIndex(currentPin);
-    element.appendChild(window.createCard.fillLodge(filteredData[currentPinIndex])); // window.data.advertisments[currentPinIndex]));
+    element.appendChild(window.createCard.fillLodge(advertismentsForRender[currentPinIndex]));
     showDialog(element);
   };
   // Навешиваем на каждый элемент массива обработчик событий
