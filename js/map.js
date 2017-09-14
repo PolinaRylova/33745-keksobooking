@@ -13,7 +13,7 @@
   // Объявляем переменную для хранения массива отрисованных меток
   var pinElements = [];
   var advertismentsToRender = [];
-  var refresh = function (advCount) {
+  var render = function (advCount) {
     if (advCount === window.constants.ADV_COUNT) {
       for (var i = 0; i < advCount; i++) {
         advertismentsToRender.push(window.data.advertisments[i]);
@@ -36,7 +36,7 @@
   };
   var loadHandler = function (data) {
     window.data.setAdvertisments(data);
-    refresh(window.constants.ADV_COUNT);
+    render(window.constants.ADV_COUNT);
   };
   var errorHandler = function (message) {
     var errorBlock = document.createElement('div');
@@ -70,7 +70,7 @@
   };
   window.backend.load(loadHandler, errorHandler);
   window.filter.tokyoFilters.addEventListener('change', function () {
-    window.debounce(refresh);
+    window.debounce(render);
   });
   // Находим активный пин
   var findActivePin = function () {
