@@ -18,6 +18,6 @@
     return pin;
   };
   window.pin = {
-    createPin: createPin
+    create: createPin
   };
 })();

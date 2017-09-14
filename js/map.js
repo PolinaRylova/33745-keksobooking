@@ -4,7 +4,7 @@
   var fillFragment = function (advertisments) {
     var fragment = document.createDocumentFragment();
     for (var j = 0; j < advertisments.length; j++) {
-      fragment.appendChild(window.pin.createPin(advertisments[j]));
+      fragment.appendChild(window.pin.create(advertisments[j]));
     }
     return fragment;
   };
@@ -19,7 +19,7 @@
         advertismentsForRender.push(window.data.advertisments[i]);
       }
     } else if (void 0 === advCount) {
-      advertismentsForRender = window.filter.doFilter(window.data.advertisments);
+      advertismentsForRender = window.filter.chooseElements(window.data.advertisments);
     }
     while (pinMap.childElementCount > 1) {
       pinMap.removeChild(pinMap.lastChild);

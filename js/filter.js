@@ -64,7 +64,7 @@
   };
   window.filter = {
     tokyoFilters: tokyoFilters,
-    doFilter: function (array) {
+    chooseElements: function (array) {
       var filteredElements = [];
       for (var i = 0; i < array.length; i++) {
         if (checkNeedShow(array[i])) {
