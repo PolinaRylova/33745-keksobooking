@@ -79,7 +79,7 @@
   };
   // Работа с активностью метки
   var deactivatePin = function (activePin) {
-    if (activePin !== null) {
+    if (activePin) {
       activePin.classList.remove('pin--active');
     }
   };
