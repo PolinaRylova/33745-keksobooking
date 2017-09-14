@@ -13,7 +13,7 @@
   // Объявляем переменную для хранения массива отрисованных меток
   var pinElements = [];
   var advertismentsToRender = [];
-  var refresh = function (advCount) {
+  var renderAdvertisments = function (advCount) {
     if (advCount === window.constants.ADV_COUNT) {
       for (var i = 0; i < advCount; i++) {
         advertismentsToRender.push(window.data.advertisments[i]);
@@ -36,7 +36,7 @@
   };
   var loadHandler = function (data) {
     window.data.setAdvertisments(data);
-    refresh(window.constants.ADV_COUNT);
+    renderAdvertisments(window.constants.ADV_COUNT);
   };
   var errorHandler = function (message) {
     var errorBlock = document.createElement('div');
@@ -47,7 +47,12 @@
     closeBtn.setAttribute('href', '#');
     closeBtn.setAttribute('tabindex', '1');
     closeBtn.classList.add('error-close');
-    closeBtn.innerHTML = '<img src="img/close.svg" alt="close" width="15" height="15">';
+    var imgBlock = document.createElement('img');
+    imgBlock.setAttribute('src', 'img/close.svg');
+    imgBlock.setAttribute('alt', 'close');
+    imgBlock.style.width = 15 + 'px';
+    imgBlock.style.height = 15 + 'px';
+    closeBtn.insertAdjacentElement('afterBegin', imgBlock);
     errorBlock.insertAdjacentElement('afterBegin', closeBtn);
     closeBtn.addEventListener('click', function () {
       errorBlock.remove();
@@ -65,7 +70,7 @@
   };
   window.backend.load(loadHandler, errorHandler);
   window.filter.tokyoFilters.addEventListener('change', function () {
-    window.debounce(refresh);
+    window.debounce(renderAdvertisments);
   });
   // Находим активный пин
   var findActivePin = function () {
@@ -79,7 +84,7 @@
   };
   // Работа с активностью метки
   var deactivatePin = function (activePin) {
-    if (activePin !== null) {
+    if (activePin) {
       activePin.classList.remove('pin--active');
     }
   };
