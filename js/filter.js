@@ -25,69 +25,53 @@
         return false;
     }
   };
-  var checkNeedShow = function (item) {
-    if (housingType.value !== 'any') {
-      if (housingType.value !== item.offer.type) {
+  var checkCheckedValue = function (targetElement, dataItem) {
+    if (targetElement.checked) {
+      if (dataItem.offer.features.indexOf(targetElement.value) === -1) {
         return false;
       }
+    }
+    return true;
+  };
+  var checkSelectValue = function (targetElement, dataItemParam) {
+    if (targetElement.value !== 'any') {
+      if (targetElement.value !== String(dataItemParam)) {
+        return false;
+      }
+    }
+    return true;
+  };
+  var checkNeedShow = function (item) {
+    if (!(checkSelectValue(housingType, item.offer.type)) ||
+      !(checkSelectValue(housingRoomNum, item.offer.rooms)) ||
+      !(checkSelectValue(housingGuestsNum, item.offer.guests))) {
+      return false;
     }
     if (housingPrice.value !== 'any') {
       if (!checkPriceInDiapason(housingPrice.value, item.offer.price)) {
         return false;
       }
     }
-    if (housingRoomNum.value !== 'any') {
-      if (+housingRoomNum.value !== item.offer.rooms) {
-        return false;
-      }
-    }
-    if (housingGuestsNum.value !== 'any') {
-      if (+housingGuestsNum.value !== item.offer.guests) {
-        return false;
-      }
-    }
-    if (housingWifi.checked) {
-      if (item.offer.features.indexOf(housingWifi.value) === -1) {
-        return false;
-      }
-    }
-    if (housingDishwasher.checked) {
-      if (item.offer.features.indexOf(housingDishwasher.value) === -1) {
-        return false;
-      }
-    }
-    if (housingParking.checked) {
-      if (item.offer.features.indexOf(housingParking.value) === -1) {
-        return false;
-      }
-    }
-    if (housingWasher.checked) {
-      if (item.offer.features.indexOf(housingWasher.value) === -1) {
-        return false;
-      }
-    }
-    if (housingElevator.checked) {
-      if (item.offer.features.indexOf(housingElevator.value) === -1) {
-        return false;
-      }
-    }
-    if (housingConditioner.checked) {
-      if (item.offer.features.indexOf(housingConditioner.value) === -1) {
-        return false;
-      }
+    if (!(checkCheckedValue(housingWifi, item)) ||
+      !(checkCheckedValue(housingDishwasher, item)) ||
+      !(checkCheckedValue(housingParking, item)) ||
+      !(checkCheckedValue(housingWasher, item)) ||
+      !(checkCheckedValue(housingElevator, item)) ||
+      !(checkCheckedValue(housingConditioner, item))) {
+      return false;
     }
     return true;
   };
   window.filter = {
     tokyoFilters: tokyoFilters,
-    doFilter: function (array) {
-      var filteredArray = [];
-      for (var i = 0; i < array.length; i++) {
-        if (checkNeedShow(array[i])) {
-          filteredArray.push(array[i]);
+    chooseElements: function (array) {
+      var filteredElements = [];
+      array.forEach(function (arrayItem) {
+        if (checkNeedShow(arrayItem)) {
+          filteredElements.push(arrayItem);
         }
-      }
-      return filteredArray;
+      });
+      return filteredElements;
     }
   };
 })();

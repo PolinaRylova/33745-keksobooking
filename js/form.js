@@ -129,10 +129,10 @@
   // Обработка события submit и сброс
   window.map.noticeForm.addEventListener('submit', function (e) {
     var formFields = window.map.noticeForm.elements;
-    for (var index = 0; index < formFields.length; index++) {
-      formFields[index].style.boxShadow = '';
-      if (!formFields[index].validity.valid) {
-        formFields[index].style.boxShadow = window.map.errorStyle;
+    for (var i = 0; i < formFields.length; i++) {
+      formFields[i].style.boxShadow = '';
+      if (!formFields[i].validity.valid) {
+        formFields[i].style.boxShadow = window.constants.ERROR_RED_SHADOW;
         return;
       }
     }

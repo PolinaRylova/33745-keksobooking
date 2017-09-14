@@ -3,25 +3,31 @@
   // Создание фрагмента и запись массива меток в него
   var fillFragment = function (advertisments) {
     var fragment = document.createDocumentFragment();
-    for (var j = 0; j < advertisments.length; j++) {
-      fragment.appendChild(window.pin.createPin(advertisments[j]));
-    }
+    advertisments.forEach(function (advItem) {
+      fragment.appendChild(window.pin.create(advItem));
+    });
     return fragment;
   };
   // Отрисовка меток на карте и заполнение карточки первым элементом из загруженного массива
   var pinMap = document.querySelector('.tokyo__pin-map');
   // Объявляем переменную для хранения массива отрисованных меток
   var pinElements = [];
-  var filteredData = [];
-  var refresh = function () {
-    filteredData = window.filter.doFilter(window.data.advertisments);
+  var advertismentsToRender = [];
+  var refresh = function (advCount) {
+    if (advCount === window.constants.ADV_COUNT) {
+      for (var i = 0; i < advCount; i++) {
+        advertismentsToRender.push(window.data.advertisments[i]);
+      }
+    } else if (void 0 === advCount) {
+      advertismentsToRender = window.filter.chooseElements(window.data.advertisments);
+    }
     while (pinMap.childElementCount > 1) {
       pinMap.removeChild(pinMap.lastChild);
     }
     window.createCard.offerDialog.classList.add('hidden');
-    if (filteredData.length > 0) {
-      pinMap.appendChild(fillFragment(filteredData));
-      window.createCard.offerDialog.appendChild(window.createCard.fillLodge(filteredData[0]));
+    if (advertismentsToRender.length > 0) {
+      pinMap.appendChild(fillFragment(advertismentsToRender));
+      window.createCard.offerDialog.appendChild(window.createCard.fillLodge(advertismentsToRender[0]));
       showDialog(window.createCard.offerDialog);
       pinElements = document.querySelectorAll('.pin:not(.pin__main)');
       pinElements[0].classList.add('pin--active');
@@ -30,7 +36,7 @@
   };
   var loadHandler = function (data) {
     window.data.setAdvertisments(data);
-    window.debounce(refresh);
+    refresh(window.constants.ADV_COUNT);
   };
   var errorHandler = function (message) {
     var errorBlock = document.createElement('div');
@@ -63,23 +69,13 @@
   });
   // Находим активный пин
   var findActivePin = function () {
-    var activePin = null;
-    pinElements.forEach(function (item) {
-      if (item.classList.contains('pin--active')) {
-        activePin = item;
-      }
-    });
-    return activePin;
+    return [].filter.call(pinElements, function (item) {
+      return item.classList.contains('pin--active');
+    })[0];
   };
   // Находим индекс текущей метки
   var findCurrentPinIndex = function (currentPin) {
-    var currentPinIndex;
-    for (var i = 0; i < pinElements.length; i++) {
-      if (currentPin === pinElements[i]) {
-        currentPinIndex = i;
-      }
-    }
-    return currentPinIndex;
+    return [].indexOf.call(pinElements, currentPin);
   };
   // Работа с активностью метки
   var deactivatePin = function (activePin) {
@@ -103,15 +99,15 @@
   // Обновление информации в карточке в соответствии с текущей меткой
   var changeCurrentInfo = function (element, currentPin) {
     var currentPinIndex = findCurrentPinIndex(currentPin);
-    element.appendChild(window.createCard.fillLodge(filteredData[currentPinIndex])); // window.data.advertisments[currentPinIndex]));
+    element.appendChild(window.createCard.fillLodge(advertismentsToRender[currentPinIndex]));
     showDialog(element);
   };
   // Навешиваем на каждый элемент массива обработчик событий
   var addEventHandlersToElements = function (elements) {
-    for (var i = 0; i < elements.length; i++) {
-      window.showCard(elements[i], window.createCard.offerDialog, changeCurrentInfo);
-      window.activatePin(elements[i], changeActivePin);
-    }
+    [].forEach.call(elements, function (elementsItem) {
+      window.showCard(elementsItem, window.createCard.offerDialog, changeCurrentInfo);
+      window.activatePin(elementsItem, changeActivePin);
+    });
   };
   window.showCard(dialogClose, window.createCard.offerDialog, hideDialogAndDeactivatePin);
   // Событие ESCAPE
@@ -199,7 +195,6 @@
     document.addEventListener('mousemove', mouseMoveHandler);
     document.addEventListener('mouseup', mouseUpHandler);
   });
-  var ERROR_RED_SHADOW = '0 0 5px 2px red';
   // Добавляем обработчик события ввода в поле адреса
   addressField.addEventListener('input', function (e) {
     // Заменяем в полученной из поля адреса строке запятые на пустые строки и превращаем строку в массив, разбив ее по пробелам
@@ -217,7 +212,7 @@
     } else {
       // В случае выхода вводимых значений за диапазон возможных
       // подсвечиваем поле красным
-      addressField.style.boxShadow = ERROR_RED_SHADOW;
+      addressField.style.boxShadow = window.constants.ERROR_RED_SHADOW;
       // И возвращаем метку и значение в поле по умолчанию
       pinMain.style.left = (defaultPinMainCoords.x - pinMainWidth / 2) + 'px';
       pinMain.style.top = (defaultPinMainCoords.y - pinMainHeight) + 'px';
@@ -226,7 +221,6 @@
   });
   window.map = {
     noticeForm: noticeForm,
-    addressField: addressField,
-    errorStyle: ERROR_RED_SHADOW
+    addressField: addressField
   };
 })();
