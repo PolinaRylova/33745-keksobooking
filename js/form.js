@@ -9,7 +9,10 @@
       currentField.style.boxShadow = window.constants.ERROR_RED_SHADOW;
       if (currentField.validity.valueMissing) {
         currentField.setCustomValidity('Заполните поле, пожалуйста');
-      } else if (currentField.validity.tooShort || currentField.value.length < window.constants.FIELD_MIN_LENGTH) {
+      } else if (currentField.validity.tooShort) {
+        currentField.setCustomValidity('Название должно содержать не менее ' + currentField.minLength + ' символов');
+      } else if (currentField.id === 'title' && currentField.value.length < window.constants.FIELD_MIN_LENGTH) {
+        // Проверка для Edge, который не поддерживает свойство 'minLength'
         currentField.setCustomValidity('Название должно содержать не менее ' + window.constants.FIELD_MIN_LENGTH + ' символов');
       } else if (currentField.validity.tooLong) {
         currentField.setCustomValidity('Название должно содержать не более ' + currentField.maxLength + ' символов');
