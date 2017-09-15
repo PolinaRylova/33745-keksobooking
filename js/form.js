@@ -6,11 +6,14 @@
   var checkValidity = function (field) {
     var currentField = field;
     if (!currentField.validity.valid) {
-      currentField.style.boxShadow = window.map.errorStyle;
+      currentField.style.boxShadow = window.constants.ERROR_RED_SHADOW;
       if (currentField.validity.valueMissing) {
         currentField.setCustomValidity('Заполните поле, пожалуйста');
-      } else if (currentField.validity.tooShort || currentField.value.length < currentField.minLength) {
+      } else if (currentField.validity.tooShort) {
         currentField.setCustomValidity('Название должно содержать не менее ' + currentField.minLength + ' символов');
+      } else if (currentField.id === 'title' && currentField.value.length < window.constants.FIELD_MIN_LENGTH) {
+        // Проверка для Edge, который не поддерживает свойство 'minLength'
+        currentField.setCustomValidity('Название должно содержать не менее ' + window.constants.FIELD_MIN_LENGTH + ' символов');
       } else if (currentField.validity.tooLong) {
         currentField.setCustomValidity('Название должно содержать не более ' + currentField.maxLength + ' символов');
       } else if (currentField.validity.rangeUnderflow) {
@@ -68,7 +71,7 @@
         minPrice = 0;
         break;
       case 2:
-        minPrice = 5000;
+        minPrice = 10000;
         break;
       case 3:
         minPrice = 10000;

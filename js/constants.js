@@ -6,6 +6,7 @@
     ENTER_KEY: 13,
     ESCAPE_KEY: 27,
     ERROR_RED_SHADOW: '0 0 5px 2px red',
-    ADV_COUNT: 3
+    ADV_COUNT: 3,
+    FIELD_MIN_LENGTH: 30
   };
 })();
