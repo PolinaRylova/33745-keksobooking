@@ -25,6 +25,7 @@
         currentField.style.boxShadow = '';
       }
     }
+    return true;
   };
   window.map.addressField.addEventListener('invalid', function () {
     checkValidity(window.map.addressField);
