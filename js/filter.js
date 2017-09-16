@@ -15,6 +15,8 @@
   var housingConditioner = tokyoFilters.querySelector('input[value="conditioner"]');
   var checkPriceInDiapason = function (diapason, value) {
     switch (diapason) {
+      case 'any':
+        return true;
       case 'middle':
         return (value <= 50000) && (value >= 10000);
       case 'low':
@@ -42,25 +44,16 @@
     return true;
   };
   var checkNeedShow = function (item) {
-    if (!(checkSelectValue(housingType, item.offer.type)) ||
-      !(checkSelectValue(housingRoomNum, item.offer.rooms)) ||
-      !(checkSelectValue(housingGuestsNum, item.offer.guests))) {
-      return false;
-    }
-    if (housingPrice.value !== 'any') {
-      if (!checkPriceInDiapason(housingPrice.value, item.offer.price)) {
-        return false;
-      }
-    }
-    if (!(checkCheckedValue(housingWifi, item)) ||
-      !(checkCheckedValue(housingDishwasher, item)) ||
-      !(checkCheckedValue(housingParking, item)) ||
-      !(checkCheckedValue(housingWasher, item)) ||
-      !(checkCheckedValue(housingElevator, item)) ||
-      !(checkCheckedValue(housingConditioner, item))) {
-      return false;
-    }
-    return true;
+    return checkSelectValue(housingType, item.offer.type) &&
+      checkSelectValue(housingRoomNum, item.offer.rooms) &&
+      checkSelectValue(housingGuestsNum, item.offer.guests) &&
+      checkPriceInDiapason(housingPrice.value, item.offer.price) &&
+      checkCheckedValue(housingWifi, item) &&
+      checkCheckedValue(housingDishwasher, item) &&
+      checkCheckedValue(housingParking, item) &&
+      checkCheckedValue(housingWasher, item) &&
+      checkCheckedValue(housingElevator, item) &&
+      checkCheckedValue(housingConditioner, item);
   };
   window.filter = {
     tokyoFilters: tokyoFilters,
