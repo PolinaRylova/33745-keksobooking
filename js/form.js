@@ -3,25 +3,30 @@
   // Form validation
   var titleField = window.map.noticeForm.querySelector('#title');
   var priceField = window.map.noticeForm.querySelector('#price');
-  var checkValidity = function (field) {
-    var currentField = field;
+  var checkValidity = function (currentField) {
+    var isValid = true;
+    currentField.setCustomValidity('');
     if (!currentField.validity.valid) {
-      currentField.style.boxShadow = window.constants.ERROR_RED_SHADOW;
+      isValid = false;
       if (currentField.validity.valueMissing) {
         currentField.setCustomValidity('Заполните поле, пожалуйста');
       } else if (currentField.validity.tooShort) {
         currentField.setCustomValidity('Название должно содержать не менее ' + currentField.minLength + ' символов');
-      } else if (currentField.id === 'title' && currentField.value.length < window.constants.FIELD_MIN_LENGTH) {
-        // Проверка для Edge, который не поддерживает свойство 'minLength'
-        currentField.setCustomValidity('Название должно содержать не менее ' + window.constants.FIELD_MIN_LENGTH + ' символов');
       } else if (currentField.validity.tooLong) {
         currentField.setCustomValidity('Название должно содержать не более ' + currentField.maxLength + ' символов');
       } else if (currentField.validity.rangeUnderflow) {
         currentField.setCustomValidity('Число должно быть в диапазоне от ' + currentField.min + ' до ' + currentField.max);
-      } else {
-        currentField.setCustomValidity('');
-        currentField.style.boxShadow = '';
       }
+    }
+    // Проверка для Edge, который не поддерживает свойство 'minLength'
+    if (currentField.id === 'title' && currentField.value.length < window.constants.FIELD_MIN_LENGTH) {
+      isValid = false;
+      currentField.setCustomValidity('Название должно содержать не менее ' + window.constants.FIELD_MIN_LENGTH + ' символов');
+    }
+    if (isValid) {
+      currentField.style.boxShadow = '';
+    } else {
+      currentField.style.boxShadow = window.constants.ERROR_RED_SHADOW;
     }
   };
   window.map.addressField.addEventListener('invalid', function () {
@@ -141,6 +146,7 @@
     }
     window.backend.save(new FormData(window.map.noticeForm), function () {
       window.map.noticeForm.reset();
+      synchronizeTypeAndMinPrice(typeSelect, priceField);
     }, window.backend.error);
     e.preventDefault();
   });
