@@ -6,7 +6,7 @@
       changeElement(changedElement, e.currentTarget);
     });
     clickedElement.addEventListener('keydown', function (e) {
-      if (e.keyCode === window.constants.ENTER_KEY) {
+      if (window.keyboard.isEnterPressed(e)) {
         changeElement(changedElement, e.currentTarget);
       }
     });

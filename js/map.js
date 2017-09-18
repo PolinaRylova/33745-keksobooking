@@ -117,7 +117,7 @@
   window.showCard(dialogClose, window.createCard.offerDialog, hideDialogAndDeactivatePin);
   // Событие ESCAPE
   document.addEventListener('keydown', function (e) {
-    if (e.keyCode === window.constants.ESCAPE_KEY) {
+    if (window.keyboard.isEscPressed(e)) {
       hideDialogAndDeactivatePin(window.createCard.offerDialog);
       deactivatePin(findActivePin());
     }

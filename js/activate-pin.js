@@ -6,7 +6,7 @@
       changeActivity(e.currentTarget);
     });
     element.addEventListener('keydown', function (e) {
-      if (e.keyCode === window.constants.ENTER_KEY) {
+      if (window.keyboard.isEnterPressed(e)) {
         changeActivity(e.currentTarget);
       }
     });
