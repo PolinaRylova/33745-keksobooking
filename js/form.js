@@ -84,52 +84,40 @@
   var synchronizeRoomNumAndCapacity = function (masterSelect, dependentSelect) {
     var selectedMasterIndex = masterSelect.selectedIndex;
     var dependentIndex;
-    var needToChange = true;
-    if (masterSelect === roomNumSelect) {
-      switch (selectedMasterIndex) {
-        case 0:
-          dependentIndex = 2;
-          break;
-        case 1:
-          dependentIndex = 1;
-          break;
-        case 2:
-          dependentIndex = 0;
-          break;
-        case 3:
-          dependentIndex = 3;
-          break;
-      }
-    } else if (masterSelect === capacitySelect) {
-      switch (selectedMasterIndex) {
-        case 0:
-          dependentIndex = 2;
-          break;
-        case 1:
-          if (dependentSelect[1].selected || dependentSelect[2].selected) {
-            needToChange = false;
-          } else {
-            dependentIndex = 1;
-          }
-          break;
-        case 2:
-          if (dependentSelect[0].selected || dependentSelect[1].selected || dependentSelect[2].selected) {
-            needToChange = false;
-          } else {
-            dependentIndex = 0;
-          }
-          break;
-        case 3:
-          dependentIndex = 3;
-          break;
-      }
+    switch (selectedMasterIndex) {
+      case 0:
+        dependentIndex = 2;
+        dependentSelect.children[0].classList.add('hidden');
+        dependentSelect.children[1].classList.add('hidden');
+        dependentSelect.children[2].classList.remove('hidden');
+        dependentSelect.children[3].classList.add('hidden');
+        break;
+      case 1:
+        dependentIndex = 1;
+        dependentSelect.children[0].classList.add('hidden');
+        dependentSelect.children[1].classList.remove('hidden');
+        dependentSelect.children[2].classList.remove('hidden');
+        dependentSelect.children[3].classList.add('hidden');
+        break;
+      case 2:
+        dependentIndex = 0;
+        dependentSelect.children[0].classList.remove('hidden');
+        dependentSelect.children[1].classList.remove('hidden');
+        dependentSelect.children[2].classList.remove('hidden');
+        dependentSelect.children[3].classList.add('hidden');
+        break;
+      case 3:
+        dependentIndex = 3;
+        dependentSelect.children[0].classList.add('hidden');
+        dependentSelect.children[1].classList.add('hidden');
+        dependentSelect.children[2].classList.add('hidden');
+        dependentSelect.children[3].classList.remove('hidden');
+        break;
     }
-    if (needToChange) {
-      dependentSelect[dependentIndex].selected = true;
-    }
+    dependentSelect[dependentIndex].selected = true;
   };
   window.synchronizeFields(roomNumSelect, synchronizeRoomNumAndCapacity, capacitySelect);
-  window.synchronizeFields(capacitySelect, synchronizeRoomNumAndCapacity, roomNumSelect);
+  synchronizeRoomNumAndCapacity(roomNumSelect, capacitySelect);
   // Обработка события submit и сброс
   window.map.noticeForm.addEventListener('submit', function (e) {
     var formFields = window.map.noticeForm.elements;
@@ -143,6 +131,7 @@
     window.backend.save(new FormData(window.map.noticeForm), function () {
       window.map.noticeForm.reset();
       synchronizeTypeAndMinPrice(typeSelect, priceField);
+      window.synchronizeFields(roomNumSelect, synchronizeRoomNumAndCapacity, capacitySelect);
     }, window.backend.error);
     e.preventDefault();
   });
