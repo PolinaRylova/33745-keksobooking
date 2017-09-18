@@ -23,11 +23,7 @@
       isValid = false;
       currentField.setCustomValidity('Название должно содержать не менее ' + window.constants.FIELD_MIN_LENGTH + ' символов');
     }
-    if (isValid) {
-      currentField.style.boxShadow = '';
-    } else {
-      currentField.style.boxShadow = window.constants.ERROR_RED_SHADOW;
-    }
+    currentField.style.boxShadow = isValid ? '' : window.constants.ERROR_RED_SHADOW;
   };
   window.map.addressField.addEventListener('invalid', function () {
     checkValidity(window.map.addressField);
