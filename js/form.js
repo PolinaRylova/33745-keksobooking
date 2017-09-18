@@ -131,7 +131,7 @@
     window.backend.save(new FormData(window.map.noticeForm), function () {
       window.map.noticeForm.reset();
       synchronizeTypeAndMinPrice(typeSelect, priceField);
-      window.synchronizeFields(roomNumSelect, synchronizeRoomNumAndCapacity, capacitySelect);
+      synchronizeRoomNumAndCapacity(roomNumSelect, capacitySelect);
     }, window.backend.error);
     e.preventDefault();
   });
