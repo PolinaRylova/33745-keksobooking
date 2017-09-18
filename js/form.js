@@ -87,34 +87,31 @@
     switch (selectedMasterIndex) {
       case 0:
         dependentIndex = 2;
-        dependentSelect.children[0].classList.add('hidden');
-        dependentSelect.children[1].classList.add('hidden');
-        dependentSelect.children[2].classList.remove('hidden');
-        dependentSelect.children[3].classList.add('hidden');
+        showSelectOptions(dependentSelect, [2]);
         break;
       case 1:
         dependentIndex = 1;
-        dependentSelect.children[0].classList.add('hidden');
-        dependentSelect.children[1].classList.remove('hidden');
-        dependentSelect.children[2].classList.remove('hidden');
-        dependentSelect.children[3].classList.add('hidden');
+        showSelectOptions(dependentSelect, [1, 2]);
         break;
       case 2:
         dependentIndex = 0;
-        dependentSelect.children[0].classList.remove('hidden');
-        dependentSelect.children[1].classList.remove('hidden');
-        dependentSelect.children[2].classList.remove('hidden');
-        dependentSelect.children[3].classList.add('hidden');
+        showSelectOptions(dependentSelect, [0, 1, 2]);
         break;
       case 3:
         dependentIndex = 3;
-        dependentSelect.children[0].classList.add('hidden');
-        dependentSelect.children[1].classList.add('hidden');
-        dependentSelect.children[2].classList.add('hidden');
-        dependentSelect.children[3].classList.remove('hidden');
+        showSelectOptions(dependentSelect, [3]);
         break;
     }
     dependentSelect[dependentIndex].selected = true;
+  };
+  var showSelectOptions = function (targetSelect, optionsToShow) {
+    [].forEach.call(targetSelect.children, function (option, index) {
+      if (optionsToShow.indexOf(index) > -1) {
+        option.classList.remove('hidden');
+      } else {
+        option.classList.add('hidden');
+      }
+    });
   };
   window.synchronizeFields(roomNumSelect, synchronizeRoomNumAndCapacity, capacitySelect);
   synchronizeRoomNumAndCapacity(roomNumSelect, capacitySelect);
