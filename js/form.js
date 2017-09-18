@@ -108,8 +108,11 @@
     [].forEach.call(targetSelect.children, function (option, index) {
       if (optionsToShow.indexOf(index) > -1) {
         option.classList.remove('hidden');
+        // Safari не применяет display: none для select option, поэтому используем disabled
+        option.disabled = false;
       } else {
         option.classList.add('hidden');
+        option.disabled = true;
       }
     });
   };
